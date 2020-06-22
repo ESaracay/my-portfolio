@@ -26,3 +26,20 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function randomQuote(){
+    const quotes = [
+        "Great leaders inspire greatness in others.",
+        "The best confidence builder is experience.",
+        "Sometimes, accepting help is harder than offering it.",
+        "A failure in planning is a plan for failure.",
+        "Never give up hope, no matter how dark things seem.",
+        "Who you were does not have to define who you are."
+    ]
+    //Pick random quote using random for a number 0-1
+    const quote = quotes[Math.floor(Math.random()*quotes.length)];
+    //display in console
+    const container = document.getElementById("starwars-quote");
+    console.log(quote);
+    container.innerText = quote;
+}
