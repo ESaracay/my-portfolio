@@ -1,29 +1,65 @@
+#intro {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 500 px;
+  height: 800px;
+  background-image: url("../images/Andromeda.jpg");
+}
+
+#intro_content {
+  color: aliceblue;
+  border: 10px solid white;
+  position: absolute;
+  font-size: 70px;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  width: 400 px;
+  z-index: 1;
+}
+
+#git {
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  left: 70%;
+  transform: translate(-50%, -70%);
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
+  z-index: 3;
 }
 
 #greeting-container {
   margin-top: 20px;
+  z-index: 3;
 }
 
-#starwars-quote{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
-    width: 300px;
-    color: blue;
+#starwars-quote {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  width: 300px;
+  color: blue;
+  z-index: 3;
 }
 
-#header{
-    margin-left: auto;
-    margin-right: auto;
-    width: 300px;
-    margin-top: 100px;
+#header {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  margin-top: 100px;
+  z-index: 3;
 }
 
-#emoji{
-    width: 100px;
-    height: 100px;
+#emoji {
+  width: 100px;
+  height: 100px;
 }
