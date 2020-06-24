@@ -12,33 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
 function randomQuote() {
-  const quotes =
-      [
-        'Great leaders inspire greatness in others.',
-        'The best confidence builder is experience.',
-        'Sometimes, accepting help is harder than offering it.',
-        'A failure in planning is a plan for failure.',
-        'Never give up hope, no matter how dark things seem.',
-        'Who you were does not have to define who you are.'
-      ]
-      // Pick random quote using random for a number 0-1
-      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  const quotes = [
+    'Great leaders inspire greatness in others.',
+    'The best confidence builder is experience.',
+    'Sometimes, accepting help is harder than offering it.',
+    'A failure in planning is a plan for failure.',
+    'Never give up hope, no matter how dark things seem.',
+    'Who you were does not have to define who you are.'
+  ];
+  // Pick random quote using random for a number 0-1
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
   // display in console
   const container = document.getElementById('starwars-quote');
   console.log(quote);
