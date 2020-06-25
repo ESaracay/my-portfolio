@@ -41,23 +41,23 @@ html {
   height: 35rem;
 }
 
-#about_image{
+#about_image {
   margin-top: 5rem;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-image: url("../images/Andromeda.jpg");
+  background-image: url("../images/tahoe.JPG");
   height: 60rem;
 }
 
-.about{
+.about {
   border: 0.5rem solid black;
   border-radius: 0.5rem;
-  height: 50rem;
+  height: 40rem;
 }
 
-#about_wrap{
+#about_wrap {
   height: 50rem;
 }
 
@@ -65,7 +65,6 @@ html {
   font-size: 3rem;
   color: black;
   font-family: Arial;
-  padding: 3rem;
 }
 
 /*clear floats*/
@@ -74,7 +73,6 @@ html {
   clear: both;
   display: table;
 }
-
 
 #skills {
   border: 0.5rem solid black;
@@ -106,7 +104,6 @@ html {
   font-size: 3rem;
 }
 
-
 .container {
   width: 100rem;
   overflow: hidden;
@@ -119,27 +116,61 @@ html {
   padding-bottom: 0.5rem;
   float: left;
   overflow: hidden;
+  position: relative;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }
 
 .one {
   background-color: blue;
-  width: 85rem;
+  animation-name: slide;
 }
+@keyframes slide {
+  0%   {width: 0rem;}
+  50%  {width: 85rem;}
+  75%  {width: 85rem;}
+  100% {width: 85rem;}
+}
+
 .two {
   background-color: green;
-  width: 75rem;
+  animation-name: slide2;
+}
+@keyframes slide2 {
+  0%   {width: 0rem;}
+  50%  {width: 75rem;}
+  75%  {width: 75rem;}
+  100% {width: 75rem;}
 }
 .three {
   background-color: orange;
-  width: 40rem;
+  animation-name: slide3;
+}
+@keyframes slide3 {
+  0%   {width: 0rem;}
+  50%  {width: 40rem;}
+  75%  {width: 40rem;}
+  100% {width: 40rem;}
 }
 .four {
   background-color: red;
-  width: 75rem;
+  animation-name: slide4;
+}
+@keyframes slide4 {
+  0%   {width: 0rem;}
+  50%  {width: 70rem;}
+  75%  {width: 70rem;}
+  100% {width: 70rem;}
 }
 .five {
   background-color: purple;
-  width: 85rem;
+  animation-name: slide5;
+}
+@keyframes slide5 {
+  0%   {width: 0rem;}
+  50%  {width: 90rem;}
+  75%  {width: 90rem;}
+  100% {width: 90rem;}
 }
 
 /*clear floats */
@@ -149,10 +180,9 @@ html {
   display: table;
 }
 
-#spacer {
+.spacer {
   height: 1rem;
 }
-
 
 #interest_image {
   margin-top: 5rem;
@@ -160,7 +190,7 @@ html {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-image: url("../images/Andromeda.jpg");
+  background-image: url("../images/hike.jpg");
   height: 60rem;
 }
 
@@ -178,7 +208,7 @@ html {
   padding-left: 10rem;
   float: left;
   width: 40%;
-  font-size:5rem;
+  font-size: 5rem;
   height: 60rem;
 }
 
@@ -186,7 +216,7 @@ html {
   width: 50%;
   float: left;
   text-align: center;
-  height:60rem;
+  height: 60rem;
 }
 
 /*clear floats*/
@@ -216,15 +246,38 @@ html {
 #movie {
   padding: 8rem;
   font-size: 4rem;
-  border:0.75rem solid blue;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-name: movie;
+  border-radius: .5rem;
 }
 
-#bottom{
-    margin-top: 10rem;
-    background-color: black;
-    font-size: 2rem;
-    color: white;
-    height: 10rem;
-    text-align:  center;
-    padding: 5rem;
+@keyframes movie{
+  0%   {border: 1rem solid blue;}
+  25%  {border: 1rem solid green;}
+  50%  {border: 1rem solid orange;}
+  75%  {border: 1rem solid purple;}
+  100% {border: 1rem solid red;}
+}
+
+#bottom {
+  margin-top: 10rem;
+  background-color: black;
+  font-size: 2rem;
+  color: white;
+  height: 10rem;
+  text-align: center;
+  padding: 5rem;
+}
+
+#Li {
+  height: 5rem;
+  width: 5rem;
+  padding: 2rem;
+}
+
+#Gi {
+  height: 5rem;
+  width: 5rem;
+  padding: 2rem;
 }

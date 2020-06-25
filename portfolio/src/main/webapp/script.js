@@ -43,5 +43,5 @@ function randomMovie() {
 
   const container = document.getElementById('movie');
 
-  container.innerText = "\"" + movie + "\"";
+  container.innerText = '"' + movie + '"';
 }
