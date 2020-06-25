@@ -41,6 +41,26 @@ html {
   height: 35rem;
 }
 
+#about_image{
+  margin-top: 5rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-image: url("../images/Andromeda.jpg");
+  height: 60rem;
+}
+
+.about{
+  border: 0.5rem solid black;
+  border-radius: 0.5rem;
+  height: 50rem;
+}
+
+#about_wrap{
+  height: 50rem;
+}
+
 #about {
   font-size: 3rem;
   color: black;
@@ -55,9 +75,6 @@ html {
   display: table;
 }
 
-.mid {
-  margin-top: 25rem;
-}
 
 #skills {
   border: 0.5rem solid black;
@@ -67,10 +84,11 @@ html {
 
 .left {
   float: left;
-  width: 35%;
+  width: 43%;
   height: 65rem;
 }
 #coding {
+  padding-top: 2.5rem;
   padding-left: 2rem;
   height: 60rem;
   width: 60rem;
@@ -78,8 +96,9 @@ html {
 
 .right {
   float: left;
-  width: 65%;
+  width: 57%;
   height: 65rem;
+  overflow: hidden;
 }
 
 .skill {
@@ -87,10 +106,6 @@ html {
   font-size: 3rem;
 }
 
-#skills-head {
-  font-size: 2.5rem;
-  font-style: underline;
-}
 
 .container {
   width: 100rem;
@@ -103,6 +118,7 @@ html {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   float: left;
+  overflow: hidden;
 }
 
 .one {
@@ -133,20 +149,82 @@ html {
   display: table;
 }
 
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 65rem;
-  z-index: 3;
-  font-size: 2rem;
+#spacer {
+  height: 1rem;
 }
 
-#starwars-quote {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2rem;
-  width: 30rem;
-  color: blue;
-  z-index: 3;
-  font-size: 2rem;
+
+#interest_image {
+  margin-top: 5rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-image: url("../images/Andromeda.jpg");
+  height: 60rem;
+}
+
+#interests {
+  border: 0.5rem solid black;
+  border-radius: 0.5rem;
+  height: 60rem;
+}
+
+.ul {
+  list-style-type: disc;
+}
+
+.list {
+  padding-left: 10rem;
+  float: left;
+  width: 40%;
+  font-size:5rem;
+  height: 60rem;
+}
+
+.gen {
+  width: 50%;
+  float: left;
+  text-align: center;
+  height:60rem;
+}
+
+/*clear floats*/
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+#header2 {
+  padding-top: 5rem;
+  font-size: 4rem;
+  text-decoration: underline;
+}
+
+.button {
+  padding-top: 5rem;
+  background-color: black;
+  border: 0.75rem solid #008cba;
+  color: white;
+  text-align: center;
+  padding: 3rem 3.5rem;
+  display: inline-block;
+  font-size: 2.5rem;
+}
+
+#movie {
+  padding: 8rem;
+  font-size: 4rem;
+  border:0.75rem solid blue;
+}
+
+#bottom{
+    margin-top: 10rem;
+    background-color: black;
+    font-size: 2rem;
+    color: white;
+    height: 10rem;
+    text-align:  center;
+    padding: 5rem;
 }

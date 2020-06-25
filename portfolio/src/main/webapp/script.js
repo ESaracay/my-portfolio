@@ -12,19 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function randomQuote() {
-  const quotes = [
-    'Great leaders inspire greatness in others.',
-    'The best confidence builder is experience.',
-    'Sometimes, accepting help is harder than offering it.',
-    'A failure in planning is a plan for failure.',
-    'Never give up hope, no matter how dark things seem.',
-    'Who you were does not have to define who you are.'
-  ];
-  // Pick random quote using random for a number 0-1
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  // display in console
-  const container = document.getElementById('starwars-quote');
-  console.log(quote);
-  container.innerText = quote;
+
+function randomMovie() {
+  const movies =
+      [
+        'Star Wars',
+        'Indiana Jones',
+        'Back to the Future',
+        'Lord of the Rings',
+        'Wall-E',
+        'Robots',
+        'Captain America',
+        'Avengers Infinity War',
+        'Avatar',
+        'The Titanic',
+        'Spider-Man: Into the Spider-Verse',
+        'catch me if you can',
+        'Forrest Gump',
+        'The Aviator',
+        'Inception',
+        'Up',
+        'Gladiator',
+        'A Beautiful Mind',
+        'Interstellar',
+        'The Martian',
+        'The Jungle Book'
+      ]
+
+      const movie = movies[Math.floor(Math.random() * movies.length)];
+
+  const container = document.getElementById('movie');
+
+  container.innerText = "\"" + movie + "\"";
 }
