@@ -23,7 +23,10 @@ html {
   padding: 1rem;
   width: 44rem;
   z-index: 1;
+  letter-spacing: .1rem;
+
 }
+
 
 .header {
   margin-left: auto;
@@ -105,11 +108,12 @@ html {
 }
 
 .container {
-  width: 100rem;
+  width: 85rem;
   overflow: hidden;
   border-radius: 5px;
   background-color: #bbb;
 }
+
 .rectangle {
   height: 2rem;
   padding-top: 0.5rem;
@@ -127,9 +131,7 @@ html {
 }
 @keyframes slide {
   0%   {width: 0rem;}
-  50%  {width: 85rem;}
-  75%  {width: 85rem;}
-  100% {width: 85rem;}
+  50%  {width: 63rem;}
 }
 
 .two {
@@ -138,9 +140,7 @@ html {
 }
 @keyframes slide2 {
   0%   {width: 0rem;}
-  50%  {width: 75rem;}
-  75%  {width: 75rem;}
-  100% {width: 75rem;}
+  50%  {width: 53rem;}
 }
 .three {
   background-color: orange;
@@ -148,9 +148,7 @@ html {
 }
 @keyframes slide3 {
   0%   {width: 0rem;}
-  50%  {width: 40rem;}
-  75%  {width: 40rem;}
-  100% {width: 40rem;}
+  50%  {width: 32rem;}
 }
 .four {
   background-color: red;
@@ -158,9 +156,7 @@ html {
 }
 @keyframes slide4 {
   0%   {width: 0rem;}
-  50%  {width: 70rem;}
-  75%  {width: 70rem;}
-  100% {width: 70rem;}
+  50%  {width: 49rem;}
 }
 .five {
   background-color: purple;
@@ -168,9 +164,7 @@ html {
 }
 @keyframes slide5 {
   0%   {width: 0rem;}
-  50%  {width: 90rem;}
-  75%  {width: 90rem;}
-  100% {width: 90rem;}
+  50%  {width: 62rem;}
 }
 
 /*clear floats */
@@ -280,4 +274,87 @@ html {
   height: 5rem;
   width: 5rem;
   padding: 2rem;
+}
+
+/*For half tabs*/
+@media only screen and (max-width: 1150px){
+     html {
+  font-size: 40%;
+}
+}
+
+/*For phones*/
+@media only screen and (max-width:950px){
+ html {
+  font-size: 20%;
+}
+
+#intro_content{
+    top: 35%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+}
+#about{
+    font-size: 2.7rem;
+}
+.container{
+    width:80rem;
+}
+
+@keyframes slide {
+  0%   {width: 0rem;}
+  50%  {width: 68rem;}
+}
+@keyframes slide2 {
+  0%   {width: 0rem;}
+  50%  {width: 60rem;}
+}
+@keyframes slide3 {
+  0%   {width: 0rem;}
+  50%  {width: 32rem;}
+}
+@keyframes slide4 {
+  0%   {width: 0rem;}
+  50%  {width: 56rem;}
+}
+@keyframes slide5 {
+  0%   {width: 0rem;}
+  50%  {width: 72rem;}
+}
+
+}
+
+
+/*For my monitor*/
+@media only screen and (min-width: 1700px){
+
+html {
+    font-size: 80%;
+} 
+
+.container{
+    width:100 rem;
+}
+
+@keyframes slide {
+  0%   {width: 0rem;}
+  50%  {width: 67rem;}
+}
+@keyframes slide2 {
+  0%   {width: 0rem;}
+  50%  {width: 60rem;}
+}
+@keyframes slide3 {
+  0%   {width: 0rem;}
+  50%  {width: 40rem;}
+}
+@keyframes slide4 {
+  0%   {width: 0rem;}
+  50%  {width: 65rem;}
+}
+@keyframes slide5 {
+  0%   {width: 0rem;}
+  50%  {width: 66rem;}
+}
+
 }
