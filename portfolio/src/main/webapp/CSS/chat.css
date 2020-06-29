@@ -1,0 +1,18 @@
+#myName{
+    color:blue;
+    text-align: center;
+}
+
+#myButton{
+    box-align: center;
+    text-align: center;
+    background-color:lightgreen;
+    color: black;
+    padding: 2rem 2.5rem;
+}
+
+#contain{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

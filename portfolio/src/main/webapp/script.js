@@ -43,7 +43,9 @@ function txtRotate(text) {
     text.deleting = false;
   }
   console.log(text.txt);
-  document.getElementById('intro_content').innerText = text.txt;
+  if(text.txt != null) {
+    document.getElementById('intro_content').innerText = text.txt;
+  }
 }
 
 
@@ -56,8 +58,7 @@ window.onload =
 
 /*This function picks a random movie from our list and displays
 it when the user clicks the random movie generator button*/
-function
-randomMovie() {
+function randomMovie() {
   const movies =
       [
         'Star Wars',
@@ -88,4 +89,10 @@ randomMovie() {
   const container = document.getElementById('movie');
 
   container.innerText = '"' + movie + '"';
+}
+
+async function grabName(){
+    const server = await fetch('/data');
+    const name = await server.text();
+    document.getElementById("myName").innerText = name;
 }
