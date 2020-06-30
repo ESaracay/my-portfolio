@@ -24,9 +24,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+//Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+//Query
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -35,51 +40,84 @@ public class DataServlet extends HttpServlet {
   public class Comment {
       private String time, user, content;
 
-      public Comment(String user,String content) {
-          Date date = new Date();
-          SimpleDateFormat formatter = new SimpleDateFormat("MMM d, HH:MM a");
+      public Comment(String user,String content, String time) {
           this.user= user;
           this.content = content;
-          this.time = formatter.format(date);
+          this.time = time;
       }
   }
 
-  private List<Comment> text;
-
-  @Override
-  public void init(){
-      text = new ArrayList<>();
-  }  
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String my_json = convertToJson(text);
+    int count = 0;
+    int maxComments = setMax(request);
+    Query myQuery = new Query("Task").addSort("timeStamp",SortDirection.DESCENDING);
+    DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = dataStore.prepare(myQuery);
+    System.out.println(maxComments);
+    List<Comment> commentList = new ArrayList<>();
+    for(Entity entity: results.asIterable()){
+        String user = (String) entity.getProperty("user");
+        String content = (String)entity.getProperty("content");
+        String displayTime = (String) entity.getProperty("displayTime");
+
+        Comment myComment = new Comment(user, content, displayTime);
+        commentList.add(myComment);
+
+        count++;
+        if(count >= maxComments){
+            break;
+        }
+    }
+    String myJson = convertToJson(commentList);
     response.setContentType("application/json;");
-    response.getWriter().println(my_json);
+    response.getWriter().println(myJson);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       Entity myEntity = new Entity("Task");
-
+    
       String user = request.getParameter("user");
       String content = request.getParameter("content");
-      long time_stamp = System.currentTimeMillis();
+      long timeStamp = System.currentTimeMillis();
+      Date date = new Date();
+      SimpleDateFormat formatter = new SimpleDateFormat("MMM d, HH:MM a");
+      String displayTime = formatter.format(date);
 
       myEntity.setProperty("user", user);
       myEntity.setProperty("content", content);
-      myEntity.setProperty("time_stamp", time_stamp);
+      myEntity.setProperty("timeStamp", timeStamp);
+      myEntity.setProperty("displayTime", displayTime);
 
-      DatastoreService data_store = DatastoreServiceFactory.getDatastoreService();
-      data_store.put(myEntity);
+      DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+      dataStore.put(myEntity);
 
       // redirect to same page so that the page refreshes with new comment
-      //response.sendRedirect("/chat.html");
+      response.sendRedirect("/chat.html");
   }
 
-  private String convertToJson(List<Comment> text) {
-    Gson my_gson = new Gson();
-    String my_json = my_gson.toJson(text);
-    return my_json;
+  private String convertToJson(List<Comment> commentList) {
+    Gson myGson = new Gson();
+    String myJson = myGson.toJson(commentList);
+    return myJson;
   }
+
+  private int setMax(HttpServletRequest request){
+      String mynum = request.getParameter("numComments");
+      int num;
+     // safeguards the program just in case the user does not enter a number
+      try {
+          num = Integer.parseInt(mynum);
+      }catch(NumberFormatException e){
+          return 1;
+      }
+      
+      if(num <= 0 || num > 5){
+          return 5;
+      }
+          
+      return num;  
+  }
+
 }

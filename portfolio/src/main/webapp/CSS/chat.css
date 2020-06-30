@@ -1,15 +1,14 @@
+html {
+  font-size: 62.5%;
+}
+
 #comments{
     background-color: lightgray;
     text-align: center;
     text-decoration-color: black;
-}
-
-#myButton{
-    box-align: center;
-    text-align: center;
-    background-color:lightgreen;
-    color: black;
-    padding: 2rem 2.5rem;
+    width: 80%;
+    right: 50%;
+    border: .2rem solid black;
 }
 
 #contain{
@@ -20,4 +19,14 @@
 
 #top{
     text-align: center;
+}
+
+#options{
+    bottom: 1rem;
+    padding: 1rem;
+    position: fixed;
+    text-align: center;
+    background-color: black;
+    width:100%;
+    color: white;
 }
