@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+*Picks a random movie from our list and displays
+*it when the user clicks the random movie generator button
+*/
 
-/*This function picks a random movie from our list and displays
-it when the user clicks the random movie generator button*/
+
 function randomMovie() {
   const movies =
       [
@@ -41,7 +44,7 @@ function randomMovie() {
         'The Jungle Book'
       ]
 
-      const movie = movies[Math.floor(Math.random() * movies.length)];
+  const movie = movies[Math.floor(Math.random() * movies.length)];
 
   const container = document.getElementById('movie');
 
