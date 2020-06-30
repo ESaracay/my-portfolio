@@ -24,10 +24,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  
   public class Comment {
       private String time, user, content;
 
@@ -56,13 +60,23 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      Entity myEntity = new Entity("Task");
+
       String user = request.getParameter("user");
       String content = request.getParameter("content");
-      Comment my_comment = new Comment(user, content);
-      text.add(my_comment);
-      // redirect to same page so that the page refreshed with new comment
-      response.sendRedirect("/chat.html");
+      long time_stamp = System.currentTimeMillis();
+
+      myEntity.setProperty("user", user);
+      myEntity.setProperty("content", content);
+      myEntity.setProperty("time_stamp", time_stamp);
+
+      DatastoreService data_store = DatastoreServiceFactory.getDatastoreService();
+      data_store.put(myEntity);
+
+      // redirect to same page so that the page refreshes with new comment
+      //response.sendRedirect("/chat.html");
   }
+
   private String convertToJson(List<Comment> text) {
     Gson my_gson = new Gson();
     String my_json = my_gson.toJson(text);
