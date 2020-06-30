@@ -6,11 +6,19 @@
 		<link rel="stylesheet" href="CSS/chat.css" />
 		<script src="script.js"></script>
 	</head>
-    <body>
+    <body onload ="grabComments()">
+        <h1 id="top">Comments</h1>
         <div id="contain">
-        <button id ="myButton" onclick="grabName()">Click Here</button>
+        <form action="/data" method="POST">
+            <label>Name:</label>
+            <input type="text" name="user" value="Enter Name">
+            <label>Comment:</label>
+            <input type="text" name="content" value="Enter Comment">
+            <input type="submit" value="Submit">
+        </form>
         </div>
-        <h1 id="myName"></h1>
+        <div id="comments">
+        </div>
     </body>
 </html>
 

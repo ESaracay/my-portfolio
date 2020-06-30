@@ -1,6 +1,7 @@
-#myName{
-    color:blue;
+#comments{
+    background-color: lightgray;
     text-align: center;
+    text-decoration-color: black;
 }
 
 #myButton{
@@ -15,4 +16,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#top{
+    text-align: center;
 }
