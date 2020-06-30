@@ -1,0 +1,23 @@
+#comments{
+    background-color: lightgray;
+    text-align: center;
+    text-decoration-color: black;
+}
+
+#myButton{
+    box-align: center;
+    text-align: center;
+    background-color:lightgreen;
+    color: black;
+    padding: 2rem 2.5rem;
+}
+
+#contain{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#top{
+    text-align: center;
+}
