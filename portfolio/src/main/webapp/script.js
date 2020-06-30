@@ -60,6 +60,7 @@ async function grabComments(){
 
         chat_body = document.createElement("P");
         comment = document.createTextNode(comments[i]["content"]);
+        
         chat_body.appendChild(comment);
         
         section.appendChild(chat_header);
