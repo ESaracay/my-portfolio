@@ -52,16 +52,16 @@ async function grabComments(){
     const comments = await fetch('/data').then(response => response.json());
     console.log(comments);
     for (var i = 0; i < comments.length; i++) {
-        console.log("User:"+comments[i]["user"]);
-        console.log("Time:"+comments[i]["time"]);
-        console.log("Content:"+comments[i]["content"]);
         section = document.getElementById("comments");
+
         chat_header = document.createElement("HEADER");
         comment_header = comments[i]["user"] + " " + comments[i]["time"];
         chat_header.appendChild(document.createTextNode(comment_header));
+
         chat_body = document.createElement("P");
         comment = document.createTextNode(comments[i]["content"]);
         chat_body.appendChild(comment);
+        
         section.appendChild(chat_header);
         section.appendChild(chat_body);
     }
