@@ -30,6 +30,7 @@ class Typer {
   }
 }
 
+
 function txtRotate(text) {
   if (text.deleting) {
     text.backSpace();
@@ -54,10 +55,12 @@ window.onload =
   setInterval(txtRotate, mytyper.speed, mytyper);
 }
 
-/*This function picks a random movie from our list and displays
-it when the user clicks the random movie generator button*/
-function
-randomMovie() {
+/**
+*Picks a random movie from our list and displays
+*it when the user clicks the random movie generator button
+*/
+
+function randomMovie() {
   const movies =
       [
         'Star Wars',
@@ -83,7 +86,7 @@ randomMovie() {
         'The Jungle Book'
       ]
 
-      const movie = movies[Math.floor(Math.random() * movies.length)];
+  const movie = movies[Math.floor(Math.random() * movies.length)];
 
   const container = document.getElementById('movie');
 
