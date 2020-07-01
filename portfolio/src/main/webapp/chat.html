@@ -9,7 +9,7 @@
     <body onload ="grabComments()">
         <h1 id="top">Comments</h1>
         <div id="contain">
-        <form action="/data" method="POST">
+        <form action="/new-comment" method="POST">
             <label>Name:</label>
             <input type="text" name="user" value="Enter Name">
             <label>Comment:</label>
@@ -20,8 +20,12 @@
         <div id="comments">
         </div>
         <div id="options">
-            <label>Select Number Of Comments To Generate</label>
-            <input type="number" id="quantity" name="numComments" min="1" max="10" onchange="grabComments()">
+            <form action="/data" method="POST">
+                <label>Select Number Of Comments To Generate</label>
+                <input type="number" id="quantity" name="numComments" min="1" value="5" max="10">
+                <input type="submit" value="refresh">
+            </form>
+            <button onclick="deleteComments()">Delete</button>
         </div>
     </body>
 </html>

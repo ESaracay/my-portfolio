@@ -47,15 +47,16 @@ public class DataServlet extends HttpServlet {
       }
   }
 
+  private int numCommentsDisplayed = 5;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int count = 0;
-    int maxComments = setMax(request);
     Query myQuery = new Query("Task").addSort("timeStamp",SortDirection.DESCENDING);
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = dataStore.prepare(myQuery);
-    System.out.println(maxComments);
     List<Comment> commentList = new ArrayList<>();
+
     for(Entity entity: results.asIterable()){
         String user = (String) entity.getProperty("user");
         String content = (String)entity.getProperty("content");
@@ -65,7 +66,7 @@ public class DataServlet extends HttpServlet {
         commentList.add(myComment);
 
         count++;
-        if(count >= maxComments){
+        if(count >= numCommentsDisplayed){
             break;
         }
     }
@@ -76,25 +77,8 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Entity myEntity = new Entity("Task");
-    
-      String user = request.getParameter("user");
-      String content = request.getParameter("content");
-      long timeStamp = System.currentTimeMillis();
-      Date date = new Date();
-      SimpleDateFormat formatter = new SimpleDateFormat("MMM d, HH:MM a");
-      String displayTime = formatter.format(date);
-
-      myEntity.setProperty("user", user);
-      myEntity.setProperty("content", content);
-      myEntity.setProperty("timeStamp", timeStamp);
-      myEntity.setProperty("displayTime", displayTime);
-
-      DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
-      dataStore.put(myEntity);
-
-      // redirect to same page so that the page refreshes with new comment
-      response.sendRedirect("/chat.html");
+    numCommentsDisplayed = setMax(request);
+    response.sendRedirect("/chat.html");
   }
 
   private String convertToJson(List<Comment> commentList) {
@@ -110,10 +94,10 @@ public class DataServlet extends HttpServlet {
       try {
           num = Integer.parseInt(mynum);
       }catch(NumberFormatException e){
-          return 1;
+          return 3;
       }
       
-      if(num <= 0 || num > 5){
+      if(num <= 0 || num > 10){
           return 5;
       }
           
