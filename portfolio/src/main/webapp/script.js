@@ -41,7 +41,7 @@ function randomMovie() {
         'The Jungle Book'
       ]
 
-      const movie = movies[Math.floor(Math.random() * movies.length)];
+  const movie = movies[Math.floor(Math.random() * movies.length)];
 
   const container = document.getElementById('movie');
 
