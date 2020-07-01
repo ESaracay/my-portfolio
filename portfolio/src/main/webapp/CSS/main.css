@@ -8,7 +8,7 @@ html {
   background-position: center;
   background-attachment: fixed;
   height: 100rem;
-  background-image: url("../images/Andromeda.jpg");
+  background-image: url("../../images/Andromeda.jpg");
 }
 
 #intro_content {
@@ -48,7 +48,7 @@ html {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-image: url("../images/tahoe.JPG");
+  background-image: url("../../images/tahoe.JPG");
   height: 60rem;
 }
 
@@ -202,7 +202,7 @@ html {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-image: url("../images/hike.jpg");
+  background-image: url("../../images/hike.jpg");
   height: 60rem;
 }
 
@@ -319,7 +319,80 @@ html {
     background-position: center;
     background-attachment: scroll;
     height: 80rem;
-    background-image: url("../images/Andromeda.jpg");
+    background-image: url("../../images/Andromeda.jpg");
+  }
+
+  #intro_content {
+    font-size: 6rem;
+    width: 20rem;
+    z-index: 1;
+    letter-spacing: 0.1rem;
+  }
+
+  #hs {
+    padding-left: 2rem;
+    width: 35rem;
+    height: 35rem;
+  }
+
+  #about_image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    height: 50rem;
+    background-image: url("../../images/tahoe.JPG");
+  }
+
+  .about {
+    border: 0.5rem solid black;
+    border-radius: 0.5rem;
+    height: 80rem;
+  }
+
+  #skills {
+    border: 0.5rem solid black;
+    border-radius: 0.5rem;
+    height: 85rem;
+  }
+
+  .left {
+    float: left;
+    width: 43%;
+    height: 33rem;
+  }
+  #coding {
+    padding-top: 2.5rem;
+    height: 30rem;
+    width: 30rem;
+  }
+
+  .right {
+    float: left;
+    width: 100%;
+    height: 65rem;
+    overflow: hidden;
+  }
+
+  .skill {
+    padding-left: 1rem;
+    font-size: 3rem;
+  }
+
+  .container {
+    width: 35rem;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: #bbb;
+  }
+
+  @keyframes slide {
+    0% {
+      width: 0rem;
+    }
+    50% {
+      width: 32rem;
+    }
   }
 
   #intro_content {
@@ -372,11 +445,6 @@ html {
     width: 100%;
     height: 65rem;
     overflow: hidden;
-  }
-
-  .skill {
-    padding-left: 1rem;
-    font-size: 3rem;
   }
 
   .container {
