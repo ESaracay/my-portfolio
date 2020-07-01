@@ -56,9 +56,9 @@ window.onload =
 }
 
 /**
-*Picks a random movie from our list and displays
-*it when the user clicks the random movie generator button
-*/
+ * Picks a random movie from our list and displays
+ * it when the user clicks the random movie generator button.
+ */
 
 function randomMovie() {
   const movies =
