@@ -97,35 +97,36 @@ function move(myBubbleArray) {
   }
 }
 
-/*This function picks a random movie from our list and displays
-it when the user clicks the random movie generator button*/
+/**
+ * Picks a random movie from our list and displays
+ * it when the user clicks the random movie generator button.
+ */
 function randomMovie() {
-  const movies =
-      [
-        'Star Wars',
-        'Indiana Jones',
-        'Back to the Future',
-        'Lord of the Rings',
-        'Wall-E',
-        'Robots',
-        'Captain America',
-        'Avengers Infinity War',
-        'Avatar',
-        'The Titanic',
-        'Spider-Man: Into the Spider-Verse',
-        'catch me if you can',
-        'Forrest Gump',
-        'The Aviator',
-        'Inception',
-        'Up',
-        'Gladiator',
-        'A Beautiful Mind',
-        'Interstellar',
-        'The Martian',
-        'The Jungle Book'
-      ]
+  const movies = [
+    'Star Wars',
+    'Indiana Jones',
+    'Back to the Future',
+    'Lord of the Rings',
+    'Wall-E',
+    'Robots',
+    'Captain America',
+    'Avengers Infinity War',
+    'Avatar',
+    'The Titanic',
+    'Spider-Man: Into the Spider-Verse',
+    'catch me if you can',
+    'Forrest Gump',
+    'The Aviator',
+    'Inception',
+    'Up',
+    'Gladiator',
+    'A Beautiful Mind',
+    'Interstellar',
+    'The Martian',
+    'The Jungle Book'
+  ];
 
-      const movie = movies[Math.floor(Math.random() * movies.length)];
+  const movie = movies[Math.floor(Math.random() * movies.length)];
 
   const container = document.getElementById('movie');
 
@@ -135,6 +136,7 @@ function randomMovie() {
 async function grabComments() {
   const comments = await fetch('/data').then(response => response.json());
   console.log(comments);
+
   const section = document.getElementById('comments');
   section.innerHTML = '';
   for (var i = 0; i < comments.length; i++) {

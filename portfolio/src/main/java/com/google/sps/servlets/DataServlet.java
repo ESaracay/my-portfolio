@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+
 // Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -99,7 +100,7 @@ public class DataServlet extends HttpServlet {
     if (num <= 0 || num > 20) {
       return 10;
     }
-
+    
     return num;
   }
 }
