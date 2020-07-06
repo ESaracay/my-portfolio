@@ -14,36 +14,35 @@
 
 package com.google.sps.servlets;
 
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-//Data Store
+// Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-//Query
+// Query
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/delete-comments")
 public class DeleteDataServlet extends HttpServlet {
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query myQuery = new Query("Task");
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = dataStore.prepare(myQuery);
-    //Transaction txn = dataStore.newTransaction();
+    // Transaction txn = dataStore.newTransaction();
     /*try {
         PreparedQuery results = dataStore.prepare(myQuery);
         for(Entity entity: results.asIterable()){
-            dataStore.delete(entity.getKey());    
+            dataStore.delete(entity.getKey());
         }
         txn.commit();
     } finally {
@@ -51,11 +50,9 @@ public class DeleteDataServlet extends HttpServlet {
             txn.rollback();
         }
     }*/
-    for(Entity entity: results.asIterable()){
-            dataStore.delete(entity.getKey());    
-        }
+    for (Entity entity : results.asIterable()) {
+      dataStore.delete(entity.getKey());
+    }
     response.sendRedirect("/chat.html");
   }
-
-
 }

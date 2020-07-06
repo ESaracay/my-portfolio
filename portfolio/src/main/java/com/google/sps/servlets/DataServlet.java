@@ -14,37 +14,36 @@
 
 package com.google.sps.servlets;
 
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import java.util.ArrayList;
-import java.util.List;
-import com.google.gson.Gson;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-//Data Store
+// Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-//Query
+// Query
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  
   public class Comment {
-      private String time, user, content;
+    private String time, user, content;
 
-      public Comment(String user,String content, String time) {
-          this.user= user;
-          this.content = content;
-          this.time = time;
-      }
+    public Comment(String user, String content, String time) {
+      this.user = user;
+      this.content = content;
+      this.time = time;
+    }
   }
 
   private int numCommentsDisplayed = 10;
@@ -52,23 +51,23 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int count = 0;
-    Query myQuery = new Query("Task").addSort("timeStamp",SortDirection.DESCENDING);
+    Query myQuery = new Query("Task").addSort("timeStamp", SortDirection.DESCENDING);
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = dataStore.prepare(myQuery);
     List<Comment> commentList = new ArrayList<>();
 
-    for(Entity entity: results.asIterable()){
-        String user = (String) entity.getProperty("user");
-        String content = (String)entity.getProperty("content");
-        String displayTime = (String) entity.getProperty("displayTime");
+    for (Entity entity : results.asIterable()) {
+      String user = (String) entity.getProperty("user");
+      String content = (String) entity.getProperty("content");
+      String displayTime = (String) entity.getProperty("displayTime");
 
-        Comment myComment = new Comment(user, content, displayTime);
-        commentList.add(myComment);
+      Comment myComment = new Comment(user, content, displayTime);
+      commentList.add(myComment);
 
-        count++;
-        if(count >= numCommentsDisplayed){
-            break;
-        }
+      count++;
+      if (count >= numCommentsDisplayed) {
+        break;
+      }
     }
     String myJson = convertToJson(commentList);
     response.setContentType("application/json;");
@@ -87,21 +86,20 @@ public class DataServlet extends HttpServlet {
     return myJson;
   }
 
-  private int setMax(HttpServletRequest request){
-      String mynum = request.getParameter("numComments");
-      int num;
-     // safeguards the program just in case the user does not enter a number
-      try {
-          num = Integer.parseInt(mynum);
-      }catch(NumberFormatException e){
-          return 3;
-      }
-      
-      if(num <= 0 || num > 20){
-          return 10;
-      }
-          
-      return num;  
-  }
+  private int setMax(HttpServletRequest request) {
+    String mynum = request.getParameter("numComments");
+    int num;
+    // safeguards the program just in case the user does not enter a number
+    try {
+      num = Integer.parseInt(mynum);
+    } catch (NumberFormatException e) {
+      return 3;
+    }
 
+    if (num <= 0 || num > 20) {
+      return 10;
+    }
+
+    return num;
+  }
 }
