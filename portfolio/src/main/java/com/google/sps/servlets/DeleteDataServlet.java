@@ -39,10 +39,21 @@ public class DeleteDataServlet extends HttpServlet {
     Query myQuery = new Query("Task");
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = dataStore.prepare(myQuery);
-
+    //Transaction txn = dataStore.newTransaction();
+    /*try {
+        PreparedQuery results = dataStore.prepare(myQuery);
+        for(Entity entity: results.asIterable()){
+            dataStore.delete(entity.getKey());    
+        }
+        txn.commit();
+    } finally {
+        if (txn.isActive()) {
+            txn.rollback();
+        }
+    }*/
     for(Entity entity: results.asIterable()){
-        dataStore.delete(entity.getKey());    
-    }
+            dataStore.delete(entity.getKey());    
+        }
     response.sendRedirect("/chat.html");
   }
 

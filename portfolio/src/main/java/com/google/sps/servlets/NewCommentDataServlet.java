@@ -52,7 +52,7 @@ public class NewCommentDataServlet extends HttpServlet {
   
   private boolean verified(String user, String content){
 
-      if (user.equals("Enter Name") || content.equals("Enter Comment")) {
+      if (user.equals("") || content.equals("")) {
           return false;
       }
       return true;

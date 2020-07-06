@@ -47,7 +47,7 @@ public class DataServlet extends HttpServlet {
       }
   }
 
-  private int numCommentsDisplayed = 5;
+  private int numCommentsDisplayed = 10;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -97,8 +97,8 @@ public class DataServlet extends HttpServlet {
           return 3;
       }
       
-      if(num <= 0 || num > 10){
-          return 5;
+      if(num <= 0 || num > 20){
+          return 10;
       }
           
       return num;  

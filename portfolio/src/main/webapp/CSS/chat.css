@@ -2,31 +2,100 @@ html {
   font-size: 62.5%;
 }
 
-#comments{
-    background-color: lightgray;
-    text-align: center;
-    text-decoration-color: black;
+#myCanvas{
+    position: fixed;
+    background-repeat: repeat;
+    top: 0;
+    left:0;
+    z-index:-1;
+}
+
+.flex-container{
+   display: flex;
+   flex-direction:column;
+   align-items: center;
+   text-align:center;
+   overflow-wrap:break-word;
+}
+
+
+.flex-container > div{
+    margin-bottom: 1rem;
+    border: .5rem solid black;
+    border-radius: 1rem;
+    font-size: 2rem;
+    background-color:lightgray;
     width: 80%;
-    right: 50%;
-    border: .2rem solid black;
 }
 
 #contain{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
+
+#name{
+    margin-bottom: 1rem;
+    width: 80%;
+}
+
+#comment{
+    margin-bottom: 1rem;
+}
+
+.comment-body{
+    font-size: 1.5rem;
+}
+
+#text-box{
+    background-color:  white;
+    color: #0d47a1;
+    border: .2rem solid #0d47a1;
+    border-radius: 1rem;  
+    height: 8rem;
+    width: 100%;
+}
+
+
+#text-box:focus{
+    background-color: lightgray;
+}
+
+input[type=text]{
+    background-color:  white;
+    color: #0d47a1;
+    border: .2rem solid #0d47a1;
+    border-radius: 1rem;
+}
+
+input[type=text]:focus{
+    background-color:  lightgray;
+    color: #0d47a1;
+}
+
 
 #top{
     text-align: center;
+    text-decoration: underline;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+#comments{
+    min-height: 100vh;
 }
 
 #options{
-    bottom: 1rem;
-    padding: 1rem;
-    position: fixed;
+    bottom: 0;
+    padding: 1%;
+    margin-top: 5rem;
     text-align: center;
+    left:0;
     background-color: black;
-    width:100%;
+    width:98%;
     color: white;
+    font-size: 1rem;
 }
