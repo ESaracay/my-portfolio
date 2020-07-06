@@ -13,34 +13,58 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Picks a random movie from our list and displays
+ * it when the user clicks the random movie generator button.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+function randomMovie() {
+  const movies = [
+    'Star Wars',
+    'Indiana Jones',
+    'Back to the Future',
+    'Lord of the Rings',
+    'Wall-E',
+    'Robots',
+    'Captain America',
+    'Avengers Infinity War',
+    'Avatar',
+    'The Titanic',
+    'Spider-Man: Into the Spider-Verse',
+    'catch me if you can',
+    'Forrest Gump',
+    'The Aviator',
+    'Inception',
+    'Up',
+    'Gladiator',
+    'A Beautiful Mind',
+    'Interstellar',
+    'The Martian',
+    'The Jungle Book'
+  ];
+
+  const movie = movies[Math.floor(Math.random() * movies.length)];
+
+  const container = document.getElementById('movie');
+
+  container.innerText = '"' + movie + '"';
 }
 
-function randomQuote() {
-  const quotes =
-      [
-        'Great leaders inspire greatness in others.',
-        'The best confidence builder is experience.',
-        'Sometimes, accepting help is harder than offering it.',
-        'A failure in planning is a plan for failure.',
-        'Never give up hope, no matter how dark things seem.',
-        'Who you were does not have to define who you are.'
-      ]
-      // Pick random quote using random for a number 0-1
-      const quote = quotes[Math.floor(Math.random() * quotes.length)];
-  // display in console
-  const container = document.getElementById('starwars-quote');
-  console.log(quote);
-  container.innerText = quote;
+async function grabComments() {
+  const comments = await fetch('/data').then(response => response.json());
+  console.log(comments);
+  for (var i = 0; i < comments.length; i++) {
+    section = document.getElementById('comments');
+
+    chat_header = document.createElement('HEADER');
+    comment_header = comments[i]['user'] + ' ' + comments[i]['time'];
+    chat_header.appendChild(document.createTextNode(comment_header));
+
+    chat_body = document.createElement('P');
+    comment = document.createTextNode(comments[i]['content']);
+    chat_body.appendChild(comment);
+
+    section.appendChild(chat_header);
+    section.appendChild(chat_body);
+  }
 }

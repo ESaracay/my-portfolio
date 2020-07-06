@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=3.0, minimum-scale=0.86"
+			charset="UTF-8"
+		/>
 		<title>Evan Saracay Portfolio</title>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="CSS/main.css" />
 		<script src="script.js"></script>
 	</head>
 
@@ -12,22 +16,99 @@
 			<p id="intro_content">Evan Saracay</p>
 		</div>
 
-		<div id="header">
+		<div class="header">
 			<h1>About Me</h1>
-			<img id="emoji" src="/images/Emoji1.PNG" alt="Memoji Sticker" />
 		</div>
 
-		<div id="content">
-			<p>
-				Hello World, my name is Evan Saracay and I'm student at Stanford University, pursuing a bachelors degree in
-				Computer Engineering. On my free time I enjoy playing basketball, hiking, watching movies, and obviously coding.
-			</p>
-			<p>Click here to get a random message:</p>
-			<button type="button" onclick="addRandomGreeting()">Hello</button>
-			<div id="greeting-container"></div>
-			<p>Here are a few bit sized pieces of wisdom from my favorite TV show Star Wars the Clone Wars</p>
-			<button type="button" onclick="randomQuote()">Star Wars Quote</button>
-			<div id="starwars-quote"></div>
+		<div class="row">
+			<div class="column about">
+				<img id="hs" src="images/hs1.png" alt="Evan Saracay Picture" />
+				<p id="about">
+					Hello, my name is Evan Saracay and I'm a student at Stanford University, pursuing a bachelor's degree in
+					computer science. Growing up I fell in love with anything remotely "techy" and, that's what led me to CS. I'm
+					also a major space enthusiast and love to keep up to date on anything involving space. In high school, I spent
+					my free time in robotics and developed a passion for engineering. I hope to one day apply my engineering
+					knowledge and computer science skills to make products of real value to society. I also want to become an
+					astronaut but for now, my goal is to make Earth a better place one line of code at a time.
+				</p>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div id="about_image"></div>
+
+		<div class="header">
+			<h1>Skills</h1>
+		</div>
+
+		<div id="skills">
+			<div class="row">
+				<div class="column left">
+					<img id="coding" src="images/Coding.jpg" alt="computer code" />
+				</div>
+				<div class="column right">
+					<p class="skill">Python</p>
+					<div class="container">
+						<div class="rectangle one"></div>
+					</div>
+					<p class="skill">C, C++</p>
+					<div class="container">
+						<div class="rectangle two"></div>
+					</div>
+					<p class="skill">Web Development</p>
+					<div class="container">
+						<div class="rectangle three"></div>
+					</div>
+					<p class="skill">Arduino and Raspberry Pi</p>
+					<div class="container">
+						<div class="rectangle four"></div>
+					</div>
+					<p class="skill">Public Speaking</p>
+					<div class="container">
+						<div class="rectangle five"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+		<div id="interest_image"></div>
+
+		<div class="header">
+			<h1>Interests</h1>
+		</div>
+
+		<div id="interests">
+			<div class="row">
+				<div class="column list">
+					<ul>
+						<li>Movies</li>
+						<li>Basketball</li>
+						<li>Hiking</li>
+						<li>Jesus</li>
+						<li>StarWars</li>
+						<li>Space</li>
+						<li>Robotics</li>
+						<li>Electronics</li>
+					</ul>
+				</div>
+				<div class="column gen">
+					<p id="header2">Evan's Recommended Movies Generator</p>
+					<button class="button" type="button" onclick="randomMovie()">Click Here</button>
+					<div id="movie"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="bottom">
+			<p>"Thanks for reading, to get in touch checkout my github and linkedin"</p>
+			<a href="https://github.com/ESaracay">
+				<img id="Gi" src="images/Git.png" alt="Git" />
+			</a>
+			<a href="https://www.linkedin.com/in/evan-saracay-076555190">
+				<img id="Li" src="images/LinkedIcon.png" alt="LinkedIn" />
+			</a>
+			<a href="chat.html">Chat</a>
 		</div>
 	</body>
 </html>
