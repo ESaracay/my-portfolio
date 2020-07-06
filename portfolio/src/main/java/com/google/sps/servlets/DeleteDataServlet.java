@@ -18,6 +18,8 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.datastore.TransactionOptions.Builder;
 // Query
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -29,30 +31,31 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.Thread;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/delete-comments")
 public class DeleteDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query myQuery = new Query("Task");
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = dataStore.prepare(myQuery);
-    // Transaction txn = dataStore.newTransaction();
-    /*try {
+    //PreparedQuery results = dataStore.prepare(myQuery);
+    Transaction txn = dataStore.beginTransaction(Builder.withXG(true));
+    try {
+        Query myQuery = new Query("Task");
         PreparedQuery results = dataStore.prepare(myQuery);
+
         for(Entity entity: results.asIterable()){
-            dataStore.delete(entity.getKey());
+            dataStore.delete(txn, entity.getKey());
         }
         txn.commit();
     } finally {
         if (txn.isActive()) {
             txn.rollback();
         }
-    }*/
-    for (Entity entity : results.asIterable()) {
-      dataStore.delete(entity.getKey());
     }
+    
     response.sendRedirect("/chat.html");
+    
   }
 }

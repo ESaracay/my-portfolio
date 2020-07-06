@@ -158,6 +158,6 @@ async function grabComments() {
 
 async function deleteComments() {
   if (confirm('Are you sure you want to delete all comments')) {
-    fetch('/delete-comments', {method: 'POST'}).then(() => grabComments())
+    fetch('/delete-comments', {method: 'POST'}).then(() => setTimeout(grabComments,1000));
   }
 }

@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.lang.Thread;
 /**
  * This servlet runs when the form for a new comment is submitted. The comment
  * is then stored permenantly with DatastoreService.
@@ -45,7 +45,13 @@ public class NewCommentDataServlet extends HttpServlet {
     dataStore.put(myEntity);
 
     // redirect to same page so that the page refreshes with new comment
+    try{
+        Thread.sleep(1000);
+    }catch (InterruptedException e){
+        System.out.println("Sleep Interrupted");
+    }finally{
     response.sendRedirect("/chat.html");
+    }
   }
 
   private boolean verified(String user, String content) {
