@@ -6,15 +6,15 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
+import java.lang.Thread;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.Thread;
 /**
- * This servlet runs when the form for a new comment is submitted. The comment
+ * Runs when the form for a new comment is submitted. The comment
  * is then stored permenantly with DatastoreService.
  */
 @WebServlet("/new-comment")
@@ -24,7 +24,7 @@ public class NewCommentDataServlet extends HttpServlet {
     String user = request.getParameter("user");
     String content = request.getParameter("content");
 
-    // This should help guard the chat from being spammed
+    // Block chat spammers.
     if (!verified(user, content)) {
       response.sendRedirect("chat.html");
       return;
@@ -44,13 +44,13 @@ public class NewCommentDataServlet extends HttpServlet {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(myEntity);
 
-    // redirect to same page so that the page refreshes with new comment
-    try{
-        Thread.sleep(1000);
-    }catch (InterruptedException e){
-        System.out.println("Sleep Interrupted");
-    }finally{
-    response.sendRedirect("/chat.html");
+    // redirect causes html to refresh with new comments
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      System.out.println("Sleep Interrupted");
+    } finally {
+      response.sendRedirect("/chat.html");
     }
   }
 
