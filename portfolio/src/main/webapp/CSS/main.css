@@ -292,17 +292,12 @@ html {
   padding: 5rem;
 }
 
-#Li {
+.pic {
   height: 5rem;
   width: 5rem;
   padding: 2rem;
 }
 
-#Gi {
-  height: 5rem;
-  width: 5rem;
-  padding: 2rem;
-}
 
 /*For half tabs*/
 @media only screen and (max-width: 1400px) {

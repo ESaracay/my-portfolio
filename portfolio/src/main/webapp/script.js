@@ -22,8 +22,8 @@ window.addEventListener('resize', init)
 
 function startChat() {
   grabComments();
-  grabUser();
   init();
+  grabUser();
 }
 
 class Bubble {
@@ -167,6 +167,7 @@ async function grabUser() {
   logoutContainer.setAttribute('href', exit);
   userContainer.appendChild(document.createTextNode(user));
 }
+
 /**
  * Fetches comments from server and inserts the given
  * Json into a comment div.
