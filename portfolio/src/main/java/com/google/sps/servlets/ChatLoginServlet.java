@@ -8,28 +8,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
+import java.lang.Thread;
 
 @WebServlet("/chat-login")
 public class ChatLoginServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
     UserService myUser = UserServiceFactory.getUserService();
-    if(!myUser.isUserLoggedIn()){
+    if (!myUser.isUserLoggedIn()) {
         String afterLoginURL = "/chat.html";
         String loginURL = myUser.createLoginURL(afterLoginURL);
-        response.getWriter().println("<p>Please click the URL below to Login</p>");
-        response.getWriter().println("<p>Login<a href=\"" + loginURL + "\"> here</a></p>");
-    }else{
-        //Printing out the user's email so chat can grab this information later to update UI
-        String email = myUser.getCurrentUser().getEmail();
-        String logoutURL = myUser.createLogoutURL("/index.html");
-        String json = convertToJson(email, logoutURL);
-        response.getWriter().println(json);
-        response.getWriter().println("<p>SignOut<a href=\"" + logoutURL + "\"> here</a></p>");
-       // response.sendRedirect("/chat.html");
+        response.sendRedirect(loginURL);
+    } else {
+        response.sendRedirect("/chat.html");
     }
+  }
+
+    @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService myUser = UserServiceFactory.getUserService();
+    String email = myUser.getCurrentUser().getEmail();
+    String logout = myUser.createLogoutURL("/index.html");
+    String json = convertToJson(email, logout);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
 
   public class User{

@@ -13,6 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 /**
  * Runs when the form for a new comment is submitted. The comment
  * is then stored permenantly with DatastoreService.
@@ -23,6 +26,8 @@ public class NewCommentDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String user = request.getParameter("user");
     String content = request.getParameter("content");
+    UserService myUser = UserServiceFactory.getUserService();
+    String email = myUser.getCurrentUser().getEmail();
 
     // Block chat spammers.
     if (!verified(user, content)) {
@@ -40,6 +45,7 @@ public class NewCommentDataServlet extends HttpServlet {
     myEntity.setProperty("content", content);
     myEntity.setProperty("timeStamp", timeStamp);
     myEntity.setProperty("displayTime", displayTime);
+    myEntity.setProperty("email", email);
 
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(myEntity);

@@ -10,6 +10,18 @@ html {
   z-index: -1;
 }
 
+#auth {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    border: .5rem solid #0d47a1;
+    border-radius: 1rem;
+    background-color: white;
+    color: black;
+    max-width: 15%;
+    font-size: .75rem;
+}
+
 .flex-container {
   display: flex;
   flex-direction: column;
@@ -95,4 +107,21 @@ input[type="text"]:focus {
   width: 98%;
   color: white;
   font-size: 1rem;
+}
+
+@media only screen and (max-width: 676px) {
+#auth {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    border: .5rem solid #0d47a1;
+    border-radius: 1rem;
+    background-color: white;
+    color: black;
+    max-width: 70%;
+    font-size: .05rem;
+  }
 }

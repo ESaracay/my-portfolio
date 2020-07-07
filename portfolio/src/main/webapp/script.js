@@ -18,14 +18,11 @@ var myBubbleArray;
 var numBubs = 20;
 var animationID = null;
 // Resizes bubbles when page size is changed
-window.addEventListener('resize', startChat)
+window.addEventListener('resize', init)
 
 function startChat() {
   grabComments();
-  canvas = document.getElementById('myCanvas');
-  context = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  grabUser();
   init();
 }
 
@@ -62,9 +59,17 @@ class Bubble {
 }
 
 function init() {
+
   // cancels any previous animation to start a new one
   if (animationID !== null) {
     window.cancelAnimationFrame(animationID);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  } else {
+    canvas = document.getElementById('myCanvas');
+    context = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
   myBubbleArray = [];
   for (var i = 0; i < numBubs; i++) {
@@ -149,6 +154,18 @@ function randomMovie() {
   container.innerText = '"' + movie + '"';
 }
 
+
+async function grabUser(){
+    const userInfo = await fetch("/chat-login", {method: "POST"}).then(response => response.json());
+    console.log(userInfo);
+    user = "Logged in as: " + userInfo["email"];
+    exit = userInfo["logoutURL"];
+    const userContainer = document.getElementById("User");
+    const logoutContainer = document.getElementById("logout");
+    userContainer.innerHTML = "";
+    logoutContainer.setAttribute("href", exit);
+    userContainer.appendChild(document.createTextNode(user));
+}
 /**
  * Fetches comments from server and inserts the given
  * Json into a comment div.
