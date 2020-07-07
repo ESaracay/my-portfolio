@@ -14,7 +14,6 @@
 
 package com.google.sps.servlets;
 
-
 // Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -48,10 +47,10 @@ public class DataServlet extends HttpServlet {
   }
 
   private int numCommentsDisplayed = 10;
+  private final int defaultCommentsDisplayed = 10;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    int count = 0;
     Query myQuery = new Query("Task").addSort("timeStamp", SortDirection.DESCENDING);
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = dataStore.prepare(myQuery);
@@ -65,8 +64,7 @@ public class DataServlet extends HttpServlet {
       Comment myComment = new Comment(user, content, displayTime);
       commentList.add(myComment);
 
-      count++;
-      if (count >= numCommentsDisplayed) {
+      if (commentList.size() >= numCommentsDisplayed) {
         break;
       }
     }
@@ -94,13 +92,9 @@ public class DataServlet extends HttpServlet {
     try {
       num = Integer.parseInt(mynum);
     } catch (NumberFormatException e) {
-      return 3;
+      return defaultCommentsDisplayed;
     }
 
-    if (num <= 0 || num > 20) {
-      return 10;
-    }
-    
     return num;
   }
 }

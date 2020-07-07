@@ -14,9 +14,10 @@
 
 var context;
 var canvas;
+var myBubbleArray;
 var numBubs = 20;
-var interval_ID = null;
-// Add a event listener to start from top when window is resized
+var animationID = null;
+// Resizes bubbles when page size is changed
 window.addEventListener('resize', startChat)
 
 function startChat() {
@@ -61,10 +62,11 @@ class Bubble {
 }
 
 function init() {
-  if (interval_ID !== null) {
-    clearInterval(interval_ID);
+  // cancels any previous animation to start a new one
+  if (animationID !== null) {
+    window.cancelAnimationFrame(animationID);
   }
-  var myBubbleArray = [];
+  myBubbleArray = [];
   for (var i = 0; i < numBubs; i++) {
     myblue = new Bubble('#4885ed');
     myred = new Bubble('#db3236');
@@ -75,12 +77,26 @@ function init() {
     myBubbleArray.push(mygreen);
     myBubbleArray.push(myyellow);
   }
-  interval_ID = setInterval(move, 20, myBubbleArray);
+  animationID = window.requestAnimationFrame(animation);
 }
 
+var start = null;
 
-function move(myBubbleArray) {
-  // This clear Rect basically erases at the beggining of each call
+function animation(time) {
+  if (start === null) {
+    start = time;
+  }
+  var elapsed = time - start;
+  move(myBubbleArray, elapsed);
+  start = time;
+  animationID = window.requestAnimationFrame(animation);
+}
+
+/**
+ * Moves bubbles in the background and keeps them within the size of the window.
+ */
+function move(myBubbleArray, timeElapsed) {
+  // Clears background with a rectangle
   context.clearRect(0, 0, canvas.width, canvas.height);
   for (var i = 0; i < myBubbleArray.length; i++) {
     myBubble = myBubbleArray[i];
@@ -92,8 +108,8 @@ function move(myBubbleArray) {
     if (myBubble.y <= 0 || myBubble.y >= canvas.height) {
       myBubble.dy *= -1;
     }
-    myBubble.x += myBubble.dx;
-    myBubble.y += myBubble.dy;
+    myBubble.x += (myBubble.dx * timeElapsed / 20);
+    myBubble.y += (myBubble.dy * timeElapsed / 20);
   }
 }
 
@@ -133,6 +149,10 @@ function randomMovie() {
   container.innerText = '"' + movie + '"';
 }
 
+/**
+ * Fetches comments from server and inserts the given
+ * Json into a comment div.
+ */
 async function grabComments() {
   const comments = await fetch('/data').then(response => response.json());
   console.log(comments);
@@ -160,6 +180,8 @@ async function grabComments() {
 
 async function deleteComments() {
   if (confirm('Are you sure you want to delete all comments')) {
-    fetch('/delete-comments', {method: 'POST'}).then(() => setTimeout(grabComments,1000));
+    fetch('/delete-comments', {
+      method: 'POST'
+    }).then(() => setTimeout(grabComments, 1000));
   }
 }
