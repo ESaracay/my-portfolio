@@ -2,30 +2,29 @@ package com.google.sps.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.lang.Thread;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import java.lang.Thread;
 
 @WebServlet("/chat-login")
 public class ChatLoginServlet extends HttpServlet {
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService myUser = UserServiceFactory.getUserService();
     if (!myUser.isUserLoggedIn()) {
-        String afterLoginURL = "/chat.html";
-        String loginURL = myUser.createLoginURL(afterLoginURL);
-        response.sendRedirect(loginURL);
+      String afterLoginURL = "/chat.html";
+      String loginURL = myUser.createLoginURL(afterLoginURL);
+      response.sendRedirect(loginURL);
     } else {
-        response.sendRedirect("/chat.html");
+      response.sendRedirect("/chat.html");
     }
   }
 
-    @Override
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService myUser = UserServiceFactory.getUserService();
     String email = myUser.getCurrentUser().getEmail();
@@ -35,9 +34,7 @@ public class ChatLoginServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  public class User{
-      private String email, logoutURL;
-  }
+  public class User { private String email, logoutURL; }
 
   private String convertToJson(String email, String logoutURL) {
     Gson myGson = new Gson();
@@ -47,5 +44,4 @@ public class ChatLoginServlet extends HttpServlet {
     String myJson = myGson.toJson(myUser);
     return myJson;
   }
-
 }

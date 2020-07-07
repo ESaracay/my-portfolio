@@ -59,7 +59,6 @@ class Bubble {
 }
 
 function init() {
-
   // cancels any previous animation to start a new one
   if (animationID !== null) {
     window.cancelAnimationFrame(animationID);
@@ -155,16 +154,18 @@ function randomMovie() {
 }
 
 
-async function grabUser(){
-    const userInfo = await fetch("/chat-login", {method: "POST"}).then(response => response.json());
-    console.log(userInfo);
-    user = "Logged in as: " + userInfo["email"];
-    exit = userInfo["logoutURL"];
-    const userContainer = document.getElementById("User");
-    const logoutContainer = document.getElementById("logout");
-    userContainer.innerHTML = "";
-    logoutContainer.setAttribute("href", exit);
-    userContainer.appendChild(document.createTextNode(user));
+async function grabUser() {
+  const userInfo = await fetch('/chat-login', {
+                     method: 'POST'
+                   }).then(response => response.json());
+  console.log(userInfo);
+  user = 'Logged in as: ' + userInfo['email'];
+  exit = userInfo['logoutURL'];
+  const userContainer = document.getElementById('User');
+  const logoutContainer = document.getElementById('logout');
+  userContainer.innerHTML = '';
+  logoutContainer.setAttribute('href', exit);
+  userContainer.appendChild(document.createTextNode(user));
 }
 /**
  * Fetches comments from server and inserts the given

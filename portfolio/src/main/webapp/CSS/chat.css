@@ -11,15 +11,15 @@ html {
 }
 
 #auth {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    border: .5rem solid #0d47a1;
-    border-radius: 1rem;
-    background-color: white;
-    color: black;
-    max-width: 15%;
-    font-size: .75rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  border: 0.5rem solid #0d47a1;
+  border-radius: 1rem;
+  background-color: white;
+  color: black;
+  max-width: 15%;
+  font-size: 0.75rem;
 }
 
 .flex-container {
@@ -110,18 +110,18 @@ input[type="text"]:focus {
 }
 
 @media only screen and (max-width: 676px) {
-#auth {
+  #auth {
     position: static;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: auto;
-    border: .5rem solid #0d47a1;
+    border: 0.5rem solid #0d47a1;
     border-radius: 1rem;
     background-color: white;
     color: black;
     max-width: 70%;
-    font-size: .05rem;
+    font-size: 0.05rem;
   }
 }
