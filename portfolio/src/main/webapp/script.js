@@ -87,18 +87,15 @@ function animation(time) {
     start = time;
   }
   var elapsed = time - start;
-  // check if 20ms has passed
-  if((elapsed * 1000 / 20) >= 1) {
-      move(myBubbleArray);
-      start = time;
-  }
+  move(myBubbleArray, elapsed);
+  start = time;
   animationID = window.requestAnimationFrame(animation);
 }
 
 /**
  * Moves bubbles in the background and keeps them within the size of the window.
  */
-function move(myBubbleArray) {
+function move(myBubbleArray, timeElapsed) {
   // Clears background with a rectangle
   context.clearRect(0, 0, canvas.width, canvas.height);
   for (var i = 0; i < myBubbleArray.length; i++) {
@@ -111,8 +108,8 @@ function move(myBubbleArray) {
     if (myBubble.y <= 0 || myBubble.y >= canvas.height) {
       myBubble.dy *= -1;
     }
-    myBubble.x += (myBubble.dx);
-    myBubble.y += (myBubble.dy);
+    myBubble.x += (myBubble.dx * timeElapsed / 20);
+    myBubble.y += (myBubble.dy * timeElapsed / 20);
   }
 }
 
