@@ -10,17 +10,32 @@
 		<link rel="stylesheet" href="CSS/chat.css" />
 		<script src="script.js"></script>
 	</head>
-	<body onload="grabComments()">
+
+	<body onload="startChat()">
+		<canvas id="myCanvas" width="300" height="400"></canvas>
 		<h1 id="top">Comments</h1>
-		<div id="contain">
-			<form action="/data" method="POST">
-				<label>Name:</label>
-				<input type="text" name="user" value="Enter Name" />
-				<label>Comment:</label>
-				<input type="text" name="content" value="Enter Comment" />
-				<input type="submit" value="Submit" />
+
+		<div id="contain" class="flex-container">
+			<form action="/new-comment" method="POST">
+				<div id="name">
+					<input type="text" name="user" placeholder="Enter Name" />
+				</div>
+				<div id="comment">
+					<textarea id="text-box" type="text" name="content" placeholder="Enter Comment"></textarea>
+					<input type="submit" value="Submit" />
+				</div>
 			</form>
 		</div>
-		<div id="comments"></div>
+
+		<div id="comments" class="flex-container"></div>
+
+		<div id="options">
+			<form action="/data" method="POST">
+				<label>Select Number Of Comments To Generate</label>
+				<input type="number" id="quantity" name="numComments" min="1" value="10" max="20" />
+				<input type="submit" value="refresh" />
+			</form>
+			<button onclick="deleteComments()">Delete</button>
+		</div>
 	</body>
 </html>
