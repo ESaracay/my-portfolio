@@ -22,14 +22,17 @@
 		<h1 id="top">Comments</h1>
 
 		<div id="contain" class="flex-container">
-			<form action="/new-comment" method="POST">
+			<form action="" id="comment-form" method="POST" enctype="multipart/form-data">
 				<div id="name">
 					<input type="text" name="user" placeholder="Enter Name" />
 				</div>
 				<div id="comment">
 					<textarea id="text-box" type="text" name="content" placeholder="Enter Comment"></textarea>
-					<input type="submit" value="Submit" />
 				</div>
+                <div id="image-upload">
+                    <input type="file" name = "image" placeholder="Add Image">
+                    <input type="submit" value="Submit" />
+                </div>
 			</form>
 		</div>
 

@@ -24,6 +24,7 @@ function startChat() {
   grabComments();
   init();
   grabUser();
+  grabBlobURL();
 }
 
 class Bubble {
@@ -173,7 +174,7 @@ async function grabUser() {
  * Json into a comment div.
  */
 async function grabComments() {
-  const comments = await fetch('/data').then(response => response.json());
+  const comments = await fetch("/data").then(response => response.json());
   console.log(comments);
 
   const section = document.getElementById('comments');
@@ -192,15 +193,29 @@ async function grabComments() {
     chatBody.appendChild(comment);
 
     myDiv.appendChild(chatHeader);
+    if(comments[i]["image"] != null) {
+        chatImage = document.createElement('IMG');
+        chatImage.setAttribute('class', 'chat-image');
+        chatImage.setAttribute('src', comments[i]["image"]);
+        myDiv.appendChild(chatImage);
+    }
     myDiv.appendChild(chatBody);
     section.appendChild(myDiv);
   }
 }
 
 async function deleteComments() {
-  if (confirm('Are you sure you want to delete all comments')) {
-    fetch('/delete-comments', {
+  if (confirm("Are you sure you want to delete all comments")) {
+    fetch("/delete-comments", {
       method: 'POST'
     }).then(() => setTimeout(grabComments, 1000));
   }
+}
+
+async function grabBlobURL(){
+    blobURL = await fetch("/blobstore-upload-url").then((response) => {return response.text();});
+    const myForm = document.getElementById("comment-form");
+    myForm.action = blobURL;
+   // myForm.classList.remove('myclass');
+    console.log(blobURL);
 }
