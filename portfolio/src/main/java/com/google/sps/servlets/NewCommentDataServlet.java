@@ -1,7 +1,6 @@
 
 package com.google.sps.servlets;
 
-// Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -52,6 +51,7 @@ public class NewCommentDataServlet extends HttpServlet {
 
     // redirect causes html to refresh with new comments
     try {
+      // if sleep is removed then page will sometimes display deleted comments
       Thread.sleep(1000);
     } catch (InterruptedException e) {
       System.out.println("Sleep Interrupted");
@@ -61,9 +61,6 @@ public class NewCommentDataServlet extends HttpServlet {
   }
 
   private boolean verified(String user, String content) {
-    if (user.equals("") || content.equals("")) {
-      return false;
-    }
-    return true;
+    return !user.isEmpty() && !content.isEmpty();
   }
 }

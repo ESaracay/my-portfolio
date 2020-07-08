@@ -14,11 +14,9 @@
 
 package com.google.sps.servlets;
 
-// Data Store
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-// Query
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -37,12 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   public class Comment {
-    private String time, user, content;
+    private String timeCreated, user, content;
 
     public Comment(String user, String content, String time) {
       this.user = user;
       this.content = content;
-      this.time = time;
+      this.timeCreated = time;
     }
   }
 
@@ -88,7 +86,6 @@ public class DataServlet extends HttpServlet {
   private int setMax(HttpServletRequest request) {
     String mynum = request.getParameter("numComments");
     int num;
-    // safeguards the program just in case the user does not enter a number
     try {
       num = Integer.parseInt(mynum);
     } catch (NumberFormatException e) {

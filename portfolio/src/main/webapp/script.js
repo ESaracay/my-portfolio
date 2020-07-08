@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var context;
-var canvas;
-var myBubbleArray;
-var numBubs = 20;
-var animationID = null;
+let myBubbleArray;
+let animationID = null;
 // Resizes bubbles when page size is changed
 window.addEventListener('resize', init)
 
@@ -27,7 +24,8 @@ function startChat() {
 }
 
 class Bubble {
-  constructor(color) {
+  constructor(color, canvas) {
+    this.canvas = canvas;
     this.speed_factor = 3;
     if (canvas.width < 900) {
       this.speed_factor = 1.75;
@@ -41,7 +39,9 @@ class Bubble {
     this.dy = Math.random() * this.speed_factor * this.randomDirection();
     this.opacity = Math.random();
   }
+
   drawBubble() {
+    context = this.canvas.getContext('2d');
     context.beginPath();
     context.fillStyle = this.color;
     context.globalAlpha = this.opacity;
@@ -49,6 +49,7 @@ class Bubble {
     context.closePath();
     context.fill();
   }
+
   randomDirection() {
     if (Math.random() > .5) {
       return -1;
@@ -60,22 +61,19 @@ class Bubble {
 
 function init() {
   // cancels any previous animation to start a new one
+  const canvas = document.getElementById('myCanvas');
   if (animationID !== null) {
     window.cancelAnimationFrame(animationID);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  } else {
-    canvas = document.getElementById('myCanvas');
-    context = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
   }
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const context = canvas.getContext('2d');
   myBubbleArray = [];
-  for (var i = 0; i < numBubs; i++) {
-    myblue = new Bubble('#4885ed');
-    myred = new Bubble('#db3236');
-    mygreen = new Bubble('#3cba54');
-    myyellow = new Bubble('#f4c20d');
+  for (let i = 0; i < 20; i++) {
+    myblue = new Bubble('#4885ed', canvas);
+    myred = new Bubble('#db3236', canvas);
+    mygreen = new Bubble('#3cba54', canvas);
+    myyellow = new Bubble('#f4c20d', canvas);
     myBubbleArray.push(myblue);
     myBubbleArray.push(myred);
     myBubbleArray.push(mygreen);
@@ -84,13 +82,13 @@ function init() {
   animationID = window.requestAnimationFrame(animation);
 }
 
-var start = null;
+let start = null;
 
 function animation(time) {
   if (start === null) {
     start = time;
   }
-  var elapsed = time - start;
+  let elapsed = time - start;
   move(myBubbleArray, elapsed);
   start = time;
   animationID = window.requestAnimationFrame(animation);
@@ -101,8 +99,10 @@ function animation(time) {
  */
 function move(myBubbleArray, timeElapsed) {
   // Clears background with a rectangle
+  canvas = myBubbleArray[0].canvas;
+  context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
-  for (var i = 0; i < myBubbleArray.length; i++) {
+  for (let i = 0; i < myBubbleArray.length; i++) {
     myBubble = myBubbleArray[i];
     myBubble.drawBubble();
     // Logic to add wall bouncing
@@ -158,7 +158,6 @@ async function grabUser() {
   const userInfo = await fetch('/chat-login', {
                      method: 'POST'
                    }).then(response => response.json());
-  console.log(userInfo);
   user = 'Logged in as: ' + userInfo['email'];
   exit = userInfo['logoutURL'];
   const userContainer = document.getElementById('User');
@@ -174,17 +173,17 @@ async function grabUser() {
  */
 async function grabComments() {
   const comments = await fetch('/data').then(response => response.json());
-  console.log(comments);
 
   const section = document.getElementById('comments');
   section.innerHTML = '';
-  for (var i = 0; i < comments.length; i++) {
+  for (let i = 0; i < comments.length; i++) {
     // We want each comment to have a certain CSS styling
     myDiv = document.createElement('DIV');
     myDiv.setAttribute('class', 'comment');
 
     chatHeader = document.createElement('HEADER');
-    commentHeader = comments[i]['user'] + ' (' + comments[i]['time'] + ')';
+    commentHeader =
+        comments[i]['user'] + ' (' + comments[i]['timeCreated'] + ')';
     chatHeader.appendChild(document.createTextNode(commentHeader));
     chatBody = document.createElement('P');
     chatBody.setAttribute('class', 'comment-body');
