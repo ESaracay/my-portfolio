@@ -193,10 +193,10 @@ async function grabComments() {
     chatBody.appendChild(comment);
 
     myDiv.appendChild(chatHeader);
-    if(comments[i]["image"] != null) {
+    if(comments[i]["key"] != null) {
         chatImage = document.createElement('IMG');
         chatImage.setAttribute('class', 'chat-image');
-        chatImage.setAttribute('src', comments[i]["image"]);
+        chatImage.setAttribute('src', "/serve?key="+comments[i]["key"]);
         myDiv.appendChild(chatImage);
     }
     myDiv.appendChild(chatBody);

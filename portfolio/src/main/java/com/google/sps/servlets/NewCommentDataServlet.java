@@ -27,6 +27,7 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
 import java.net.MalformedURLException;
+import java.lang.IllegalArgumentException;
 import java.net.URL;
 
 /**
@@ -38,7 +39,8 @@ public class NewCommentDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String imageUrl = getBlobUrl(request);
+    String blobKey= getBlobKey(request);
+
     String user = request.getParameter("user");
     String content = request.getParameter("content");
     UserService myUser = UserServiceFactory.getUserService();
@@ -61,7 +63,7 @@ public class NewCommentDataServlet extends HttpServlet {
     myEntity.setProperty("timeStamp", timeStamp);
     myEntity.setProperty("displayTime", displayTime);
     myEntity.setProperty("email", email);
-    myEntity.setProperty("image", imageUrl);  
+    myEntity.setProperty("key", blobKey);  
 
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(myEntity);
@@ -84,7 +86,7 @@ public class NewCommentDataServlet extends HttpServlet {
   }
 
 
-  private String getBlobUrl(HttpServletRequest request){
+  private String getBlobKey(HttpServletRequest request){
     BlobstoreService myBlobService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>>  blobs = myBlobService.getUploads(request);
     List<BlobKey> myKeys = blobs.get("image");
@@ -108,18 +110,24 @@ public class NewCommentDataServlet extends HttpServlet {
       return null;
     }
 
-    // Use ImagesService to get a URL that points to the uploaded file.
+    return blobKey.getKeyString();
+    
+    /*
     ImagesService imagesService = ImagesServiceFactory.getImagesService();
     ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
-
+    */
     // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
     // path to the image, rather than the path returned by imagesService which contains a host.
-    try {
+   /*try {
       URL url = new URL(imagesService.getServingUrl(options));
       return url.getPath();
     } catch (MalformedURLException e) {
       return imagesService.getServingUrl(options);
-    }
+    } catch (IllegalArgumentException e) {
+        return imagesService.getServingUrl(options);
+    }*/
+    //return imagesService.getServingUrl(options);
+    
   }
   
 }
