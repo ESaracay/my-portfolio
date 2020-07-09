@@ -59,6 +59,10 @@ class Bubble {
   }
 }
 
+/**
+* Initializes bubble background by calling the Bubble class
+* and storing those objects inside of myBubbleArray.
+*/
 function init() {
   // cancels any previous animation to start a new one
   const canvas = document.getElementById('myCanvas');
@@ -153,7 +157,9 @@ function randomMovie() {
   container.innerText = '"' + movie + '"';
 }
 
-
+/**
+ * Fetches user information and adds it to chat header.
+ */
 async function grabUser() {
   const userInfo = await fetch('/chat-login', {
                      method: 'POST'
@@ -162,6 +168,7 @@ async function grabUser() {
   exit = userInfo['logoutURL'];
   const userContainer = document.getElementById('User');
   const logoutContainer = document.getElementById('logout');
+  //If page is refreshed then we want to reload the username 
   userContainer.innerHTML = '';
   logoutContainer.setAttribute('href', exit);
   userContainer.appendChild(document.createTextNode(user));
@@ -196,6 +203,9 @@ async function grabComments() {
   }
 }
 
+/**
+* Makes call to delete data servlet which erases all comments from dataStore.
+*/
 async function deleteComments() {
   if (confirm('Are you sure you want to delete all comments')) {
     fetch('/delete-comments', {
