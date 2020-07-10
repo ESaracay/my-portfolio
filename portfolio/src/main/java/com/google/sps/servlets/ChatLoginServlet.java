@@ -18,29 +18,27 @@ public class ChatLoginServlet extends HttpServlet {
     if (!myUser.isUserLoggedIn()) {
       String afterLoginURL = "/chat.html";
       String loginURL = myUser.createLoginURL(afterLoginURL);
-      response.sendRedirect(loginURL);
+      String loginJson = convertToJson("none", null, loginURL);
+      response.setContentType("application/json;");
+      response.getWriter().println(loginJson);    
     } else {
-      response.sendRedirect("/chat.html");
+      String email = myUser.getCurrentUser().getEmail();
+      String logout = myUser.createLogoutURL("/index.html");
+      String logoutJson = convertToJson(email, logout, null);
+      response.setContentType("application/json;");
+      response.getWriter().println(logoutJson);
     }
+
   }
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    UserService myUser = UserServiceFactory.getUserService();
-    String email = myUser.getCurrentUser().getEmail();
-    String logout = myUser.createLogoutURL("/index.html");
-    String json = convertToJson(email, logout);
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
+  public class User { private String email, logoutURL, loginURL; }
 
-  public class User { private String email, logoutURL; }
-
-  private String convertToJson(String email, String logoutURL) {
+  private String convertToJson(String email, String logoutURL, String loginURL) {
     Gson myGson = new Gson();
     User myUser = new User();
     myUser.email = email;
     myUser.logoutURL = logoutURL;
+    myUser.loginURL = loginURL;
     String myJson = myGson.toJson(myUser);
     return myJson;
   }

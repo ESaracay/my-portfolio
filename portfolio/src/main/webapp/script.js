@@ -161,9 +161,11 @@ function randomMovie() {
  * Fetches user information and adds it to chat header.
  */
 async function grabUser() {
-  const userInfo = await fetch('/chat-login', {
-                     method: 'POST'
-                   }).then(response => response.json());
+  const userInfo = await fetch('/chat-login').then(response => response.json());
+  if (userInfo['email'] === "none") {
+      window.location = userInfo['loginURL'];
+  }
+  console.log(userInfo);
   user = 'Logged in as: ' + userInfo['email'];
   exit = userInfo['logoutURL'];
   const userContainer = document.getElementById('User');
