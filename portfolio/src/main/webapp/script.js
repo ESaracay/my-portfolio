@@ -60,9 +60,9 @@ class Bubble {
 }
 
 /**
-* Initializes bubble background by calling the Bubble class
-* and storing those objects inside of myBubbleArray.
-*/
+ * Initializes bubble background by calling the Bubble class
+ * and storing those objects inside of myBubbleArray.
+ */
 function init() {
   // cancels any previous animation to start a new one
   const canvas = document.getElementById('myCanvas');
@@ -162,15 +162,15 @@ function randomMovie() {
  */
 async function grabUser() {
   const userInfo = await fetch('/chat-login').then(response => response.json());
-  if (userInfo['email'] === "none") {
-      window.location = userInfo['loginURL'];
+  if (userInfo['email'] === 'none') {
+    window.location = userInfo['loginURL'];
   }
   console.log(userInfo);
   user = 'Logged in as: ' + userInfo['email'];
   exit = userInfo['logoutURL'];
   const userContainer = document.getElementById('User');
   const logoutContainer = document.getElementById('logout');
-  //If page is refreshed then we want to reload the username 
+  // If page is refreshed then we want to reload the username
   userContainer.innerHTML = '';
   logoutContainer.setAttribute('href', exit);
   userContainer.appendChild(document.createTextNode(user));
@@ -206,8 +206,8 @@ async function grabComments() {
 }
 
 /**
-* Makes call to delete data servlet which erases all comments from dataStore.
-*/
+ * Makes call to delete data servlet which erases all comments from dataStore.
+ */
 async function deleteComments() {
   if (confirm('Are you sure you want to delete all comments')) {
     fetch('/delete-comments', {

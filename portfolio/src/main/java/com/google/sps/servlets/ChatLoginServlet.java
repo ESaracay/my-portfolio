@@ -20,7 +20,7 @@ public class ChatLoginServlet extends HttpServlet {
       String loginURL = myUser.createLoginURL(afterLoginURL);
       String loginJson = convertToJson("none", null, loginURL);
       response.setContentType("application/json;");
-      response.getWriter().println(loginJson);    
+      response.getWriter().println(loginJson);
     } else {
       String email = myUser.getCurrentUser().getEmail();
       String logout = myUser.createLogoutURL("/index.html");
@@ -28,7 +28,6 @@ public class ChatLoginServlet extends HttpServlet {
       response.setContentType("application/json;");
       response.getWriter().println(logoutJson);
     }
-
   }
 
   public class User { private String email, logoutURL, loginURL; }
