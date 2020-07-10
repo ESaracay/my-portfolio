@@ -14,12 +14,10 @@
 
 package com.google.sps.servlets;
 
-// Data Store
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-// Query
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -33,13 +31,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** 
+* Removes all comments from datastore.
+*/
 @WebServlet("/delete-comments")
 public class DeleteDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
-    // PreparedQuery results = dataStore.prepare(myQuery);
+
     Transaction txn = dataStore.beginTransaction(Builder.withXG(true));
     try {
       Query myQuery = new Query("Task");

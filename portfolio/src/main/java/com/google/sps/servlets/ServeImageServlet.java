@@ -26,8 +26,8 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 
 /**
- * Runs when the form for a new comment is submitted. The comment
- * is then stored permenantly with DatastoreService.
+ * Runs when the grabComment() function in script.js called and provides a page with 
+ * the comments image.
  */
 @WebServlet("/serve")
 public class ServeImageServlet extends HttpServlet {
