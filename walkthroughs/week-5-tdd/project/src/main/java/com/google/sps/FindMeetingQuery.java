@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.lang.Boolean;
 import java.util.HashSet;
+import java.util.HashMap;
 
 public final class FindMeetingQuery {
 
@@ -66,7 +67,8 @@ public final class FindMeetingQuery {
     if(optionalGroup.size() > 0) {
      updatedTimes = optimizeOptionalAttendees(verifiedTimes, request, optionalGroup, events);
     }
-    //Have to change .size() == 0 in future
+    
+    //return the Timeranges with optional attendess if any exist
     return (updatedTimes.size() == 0) ? verifiedTimes : updatedTimes;
   }
 
@@ -95,7 +97,7 @@ public final class FindMeetingQuery {
     }
 
     public ArrayList<TimeRange> optimizeOptionalAttendees(List<TimeRange> possibleRanges, MeetingRequest request, HashSet<String> optionalGroup, Collection<Event> events) {
-        //What if I get the list of ranges that attendees are free by using recursion
+
         ArrayList<TimeRange> possibleOptionalTimes = new ArrayList<>();
         for(String member: optionalGroup){
             MeetingRequest myRequest = new MeetingRequest(Arrays.asList(member), request.getDuration());
@@ -106,45 +108,46 @@ public final class FindMeetingQuery {
         }
         //Here we cycle through the time ranges we know already work for mandatory people & keep track of max optionals seen
         int maxNumOpt = 0;
-        ArrayList<TimeRange> maxOptionalSlots = new ArrayList<>();
+        HashMap<TimeRange, Integer> optionalSlots = new HashMap<TimeRange, Integer>();
         for(TimeRange verifiedTime: possibleRanges) {
-            //we go minute by minute seeing how many people can attend
             int bucketStart = verifiedTime.start();
-            int bucketEnd = bucketStart;
+            int endOfSlot = verifiedTime.end() - 1;
             int previousNumOpt = 0;
+            System.out.println(verifiedTime);
             for(int i = verifiedTime.start(); i < verifiedTime.end(); i++ ) {
                 TimeRange currentSlot = TimeRange.fromStartEnd(i, i + 1, false);
                 int updatedNumOpt = checkOptionalsAvailable(possibleOptionalTimes, currentSlot);
 
-                //possiblity one: we switched into a higher num of optionals ( also maybe do or updatedTime > maxNumOpt)
-                if (previousNumOpt != updatedNumOpt && previousNumOpt > maxNumOpt) {
-                    System.out.println("Switch");
-                    //Check if TimeRange is actually big enough
-                    TimeRange possibleSlot = TimeRange.fromStartEnd(bucketStart, bucketEnd, false);
-                    bucketStart = bucketEnd - 1;
+                //if we switch num optionals record to hashmap
+                if (previousNumOpt != updatedNumOpt || i == endOfSlot) {
+                    //Check if TimeRange is actually big enough for meeting
+                    TimeRange possibleSlot = TimeRange.fromStartEnd(bucketStart, i, true);
+                    bucketStart = i;
                     if (possibleSlot.duration() >= request.getDuration()) {
-                        //Clear out all other times that had less optionals
-                        maxOptionalSlots.clear();
-                        maxOptionalSlots.add(possibleSlot);
-                        maxNumOpt = previousNumOpt;
-                    }
-                } else if (previousNumOpt != updatedNumOpt &&  previousNumOpt == maxNumOpt ){ //possibility two we end up with another one that switches but equal to our max
-                TimeRange possibleSlot = TimeRange.fromStartEnd(bucketStart, bucketEnd, false);
-                bucketStart = bucketEnd - 1;
-                System.out.println("Switch2");
-                    if (possibleSlot.duration() >= request.getDuration()) {
-                        maxOptionalSlots.add(possibleSlot);
+                        optionalSlots.put(possibleSlot, previousNumOpt);
+                        if(previousNumOpt > maxNumOpt) {
+                            maxNumOpt = previousNumOpt;
+                        }
                     }
                 } 
-                bucketEnd = i + 1;
                 previousNumOpt = updatedNumOpt;
             }
         }
+        //We have the max so we loop through hashmap and grab those times
+        ArrayList<TimeRange> maxOptionalTimeRanges = new ArrayList<>();
+        for(TimeRange range: optionalSlots.keySet()) {
+            if (optionalSlots.get(range) == maxNumOpt) {
+                maxOptionalTimeRanges.add(range);
+            }
+        }
 
-        return maxOptionalSlots;
+        return maxOptionalTimeRanges;
          
     }
 
+    /* 
+    * Counts how many optional people are free during the given timeRange.
+    */
     public int checkOptionalsAvailable(ArrayList<TimeRange> timeSlots, TimeRange currentSlot) {
         int counter = 0;
         for (TimeRange freeSlot: timeSlots) {
