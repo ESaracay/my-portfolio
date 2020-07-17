@@ -16,30 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-//BlobStore
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.ServingUrlOptions;
-import java.net.MalformedURLException;
-import java.lang.IllegalArgumentException;
-import java.net.URL;
 
 /**
  * Runs when the form for a new comment is submitted. The comment
- * is then stored permenantly with DatastoreService.
+ * is then stored permanently with DatastoreService.
  */
 @WebServlet("/new-comment")
 public class NewCommentDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String blobKey= getBlobKey(request);
-
+    String imageBlobKey = filterAndUploadImageBlobstore(request);
     String user = request.getParameter("user");
     String content = request.getParameter("content");
     UserService myUser = UserServiceFactory.getUserService();
@@ -62,14 +54,14 @@ public class NewCommentDataServlet extends HttpServlet {
     myEntity.setProperty("timeStamp", timeStamp);
     myEntity.setProperty("displayTime", displayTime);
     myEntity.setProperty("email", email);
-    myEntity.setProperty("key", blobKey);  
+    myEntity.setProperty("imageBlobKey", imageBlobKey);  
 
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(myEntity);
 
-    // redirect causes html to refresh with new comments
+    // Redirect causes html to refresh with new comments
     try {
-      // if sleep is removed then page will sometimes display deleted comments
+      // If sleep is removed then page will sometimes display deleted comments
       Thread.sleep(1000);
     } catch (InterruptedException e) {
       System.out.println("Sleep Interrupted");
@@ -83,7 +75,7 @@ public class NewCommentDataServlet extends HttpServlet {
   }
 
 
-  private String getBlobKey(HttpServletRequest request){
+  private String filterAndUploadImageBlobstore(HttpServletRequest request){
     BlobstoreService myBlobService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>>  blobs = myBlobService.getUploads(request);
     List<BlobKey> myKeys = blobs.get("image");
@@ -92,39 +84,23 @@ public class NewCommentDataServlet extends HttpServlet {
       return null;
     }
 
-    BlobKey blobKey = myKeys.get(0);
-
-    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
+    BlobKey imageBlobKey = myKeys.get(0);
+    // Checks if user selected a file to upload
+    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(imageBlobKey);
     if (blobInfo.getSize() == 0) {
-      myBlobService.delete(blobKey);
+      myBlobService.delete(imageBlobKey);
       return null;
     }
 
     // Checks if file type is an image
     String type = blobInfo.getContentType();
     if (!type.startsWith("image")){
-      myBlobService.delete(blobKey);
+      myBlobService.delete(imageBlobKey);
       return null;
     }
 
-    return blobKey.getKeyString();
-    
-    /*
-    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
-    */
-    // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
-    // path to the image, rather than the path returned by imagesService which contains a host.
-   /*try {
-      URL url = new URL(imagesService.getServingUrl(options));
-      return url.getPath();
-    } catch (MalformedURLException e) {
-      return imagesService.getServingUrl(options);
-    } catch (IllegalArgumentException e) {
-        return imagesService.getServingUrl(options);
-    }*/
-    //return imagesService.getServingUrl(options);
-    
+    return imageBlobKey.getKeyString();
+       
   }
   
 }

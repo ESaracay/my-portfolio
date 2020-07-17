@@ -37,12 +37,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   public class Comment {
-    private String timeCreated, user, content, key;
+    private String timeCreated, user, content, imageBlobKey;
 
-    public Comment(String user, String content, String time, String key) {
+    public Comment(String user, String content, String time, String imageBlobKey) {
       this.user = user;
       this.content = content;
-      this.key = key;
+      this.imageBlobKey = imageBlobKey;
       this.timeCreated = time;
     }
   }
@@ -61,9 +61,9 @@ public class DataServlet extends HttpServlet {
       String user = (String) entity.getProperty("user");
       String content = (String) entity.getProperty("content");
       String displayTime = (String) entity.getProperty("displayTime");
-      String key = (String) entity.getProperty("key");
+      String imageBlobKey = (String) entity.getProperty("imageBlobKey");
 
-      Comment myComment = new Comment(user, content, displayTime, key);
+      Comment myComment = new Comment(user, content, displayTime, imageBlobKey);
       commentList.add(myComment);
 
       if (commentList.size() >= numCommentsDisplayed) {
