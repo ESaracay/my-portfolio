@@ -29,8 +29,8 @@ class Bubble {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
     this.radius = Math.floor(Math.random() * Math.sqrt(canvas.width));
-    this.dx = Math.random() * this.speed_factor * this.randomDirection();
-    this.dy = Math.random() * this.speed_factor * this.randomDirection();
+    this.dx = Math.random() * this.speed_factor * randomDirection();
+    this.dy = Math.random() * this.speed_factor * randomDirection();
     this.opacity = Math.random();
   }
 
@@ -43,13 +43,13 @@ class Bubble {
     context.closePath();
     context.fill();
   }
+}
 
-  randomDirection() {
-    if (Math.random() > .5) {
-      return -1;
-    } else {
-      return 1;
-    }
+function randomDirection() {
+  if (Math.random() > .5) {
+    return -1;
+  } else {
+    return 1;
   }
 }
 
