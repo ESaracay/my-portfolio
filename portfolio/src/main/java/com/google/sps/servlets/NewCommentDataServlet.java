@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Runs when the form for a new comment is submitted. The comment
- * is then stored permenantly with DatastoreService.
+ * is then stored permanently with DatastoreService.
  */
 @WebServlet("/new-comment")
 public class NewCommentDataServlet extends HttpServlet {
