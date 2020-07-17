@@ -96,10 +96,10 @@ async function grabComments() {
     chatBody.appendChild(comment);
 
     myDiv.appendChild(chatHeader);
-    if(comments[i]["key"] != null) {
+    if(comments[i]["imageBlobKey"] != null) {
         chatImage = document.createElement('IMG');
         chatImage.setAttribute('class', 'chat-image');
-        chatImage.setAttribute('src', "/serve?key="+comments[i]["key"]);
+        chatImage.setAttribute('src', "/serve?key=" + comments[i]["imageBlobKey"]);
         myDiv.appendChild(chatImage);
     }
     myDiv.appendChild(chatBody);
@@ -119,9 +119,7 @@ async function deleteComments() {
 }
 
 async function grabBlobURL(){
-    blobURL = await fetch("/blobstore-upload-url").then((response) => {return response.text();});
-    const myForm = document.getElementById("comment-form");
-    myForm.action = blobURL;
-   // myForm.classList.remove('myclass');
-    console.log(blobURL);
+  const blobURL = await fetch("/blobstore-upload-url").then((response) => {return response.text();});
+  const myForm = document.getElementById("comment-form");
+  myForm.action = blobURL;
 }
