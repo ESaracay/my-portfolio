@@ -61,7 +61,6 @@ async function grabUser() {
   if (userInfo['email'] === 'none') {
     window.location = userInfo['loginURL'];
   }
-  console.log(userInfo);
   user = 'Logged in as: ' + userInfo['email'];
   exit = userInfo['logoutURL'];
   const userContainer = document.getElementById('User');
@@ -83,14 +82,14 @@ async function grabComments() {
   section.innerHTML = '';
   for (let i = 0; i < comments.length; i++) {
     // We want each comment to have a certain CSS styling
-    myDiv = document.createElement('DIV');
+    myDiv = document.createElement('div');
     myDiv.setAttribute('class', 'comment');
 
-    chatHeader = document.createElement('HEADER');
+    chatHeader = document.createElement('header');
     commentHeader =
         comments[i]['user'] + ' (' + comments[i]['timeCreated'] + ')';
     chatHeader.appendChild(document.createTextNode(commentHeader));
-    chatBody = document.createElement('P');
+    chatBody = document.createElement('p');
     chatBody.setAttribute('class', 'comment-body');
     comment = document.createTextNode(comments[i]['content']);
     chatBody.appendChild(comment);

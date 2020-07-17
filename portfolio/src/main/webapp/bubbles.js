@@ -35,7 +35,7 @@ class Bubble {
   }
 
   drawBubble() {
-    context = this.canvas.getContext('2d');
+    const context = this.canvas.getContext('2d');
     context.beginPath();
     context.fillStyle = this.color;
     context.globalAlpha = this.opacity;
@@ -58,7 +58,7 @@ class Bubble {
  * and storing those objects inside of myBubbleArray.
  */
 function init() {
-  // cancels any previous animation to start a new one
+  // Cancels any previous animation to start a new one
   const canvas = document.getElementById('myCanvas');
   if (animationID !== null) {
     window.cancelAnimationFrame(animationID);

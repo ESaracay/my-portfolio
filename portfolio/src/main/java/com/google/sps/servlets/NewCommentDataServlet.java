@@ -49,9 +49,9 @@ public class NewCommentDataServlet extends HttpServlet {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(myEntity);
 
-    // redirect causes html to refresh with new comments
+    // Redirect causes html to refresh with new comments
     try {
-      // if sleep is removed then page will sometimes display deleted comments
+      // If sleep is removed then page will sometimes display deleted comments
       Thread.sleep(1000);
     } catch (InterruptedException e) {
       System.out.println("Sleep Interrupted");
