@@ -31,7 +31,7 @@ import java.net.URL;
 
 /**
  * Runs when the form for a new comment is submitted. The comment
- * is then stored permenantly with DatastoreService.
+ * is then stored permanently with DatastoreService.
  */
 @WebServlet("/new-comment")
 public class NewCommentDataServlet extends HttpServlet {
@@ -67,9 +67,9 @@ public class NewCommentDataServlet extends HttpServlet {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(myEntity);
 
-    // redirect causes html to refresh with new comments
+    // Redirect causes html to refresh with new comments
     try {
-      // if sleep is removed then page will sometimes display deleted comments
+      // If sleep is removed then page will sometimes display deleted comments
       Thread.sleep(1000);
     } catch (InterruptedException e) {
       System.out.println("Sleep Interrupted");
