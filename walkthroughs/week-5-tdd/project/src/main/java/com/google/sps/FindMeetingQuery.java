@@ -24,125 +24,134 @@ import java.util.HashMap;
 
 public final class FindMeetingQuery {
 
-  public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    List<TimeRange> verifiedTimes = new ArrayList<TimeRange>();
+  public Collection<TimeRange> calendarQuery(Collection<Event> events, MeetingRequest request) {
+    List<TimeRange> availableTimes = new ArrayList<TimeRange>();
     ArrayList<Event> listEvents = new ArrayList<>(events);
-    HashSet<String> meetingGroup = new HashSet<>(request.getAttendees());
-    ArrayList<Event> sortedListEvents = mySort(listEvents, meetingGroup);
+    HashSet<String> mandatoryAttendees = new HashSet<>(request.getAttendees());
+    ArrayList<Event> sortedListEvents = mySort(listEvents, mandatoryAttendees);
 
-    int slotStart = 0;
+    int rangeStart = 0;
     TimeRange previousSlot = null;
     for(Event event: sortedListEvents) {
-        TimeRange usedSlot = event.getWhen();
-        // checking for overlapping events
-        if(previousSlot == null || !usedSlot.overlaps(previousSlot)){
-          verifiedTimes.add(TimeRange.fromStartEnd(slotStart, usedSlot.start(), false));
-          slotStart = usedSlot.end();
-          previousSlot = usedSlot;
-        }else if(previousSlot != null && previousSlot.contains(usedSlot)) {
-            //checking for nested events
-            slotStart = previousSlot.end();
-        } else {
-            slotStart = usedSlot.end();
-            previousSlot = usedSlot;
-        }
+      TimeRange eventTimeRange = event.getWhen();
+      // checks for overlapping events
+      if(previousSlot == null || !eventTimeRange.overlaps(previousSlot)){
+        availableTimes.add(TimeRange.fromStartEnd(rangeStart, eventTimeRange.start(), false));
+        rangeStart = eventTimeRange.end();
+        previousSlot = eventTimeRange;
+      }else if(previousSlot != null && previousSlot.contains(eventTimeRange)) {
+        //checks for nested events
+        rangeStart = previousSlot.end();
+      } else {
+        rangeStart = eventTimeRange.end();
+        previousSlot = eventTimeRange;
+      }
     }
      
-    // if the last event is not at the end of the day then we want to include
-    // the timerange from end of last event to the end of the day. 
-    if (slotStart != 60 * 24){
-      verifiedTimes.add(TimeRange.fromStartEnd(slotStart, 60 * 24, false));
+    /* if the last event is not at the end of the day then arraylist adds
+    * the timerange from the end of last event to the end of the day. */
+    if (rangeStart != 60 * 24){
+      availableTimes.add(TimeRange.fromStartEnd(rangeStart, 60 * 24, false));
     }
 
-    // Get rid of short time slots
-    for(int i = 0; i < verifiedTimes.size(); i++ ) {
-        if (verifiedTimes.get(i).duration() < request.getDuration()) {
-          verifiedTimes.remove(i);
-          i--;
-        }
+    // gets rid of short time slots
+    for(int i = 0; i < availableTimes.size(); i++ ) {
+      if (availableTimes.get(i).duration() < request.getDuration()) {
+        availableTimes.remove(i);
+        i--;
+      }
     }
 
-    ArrayList<TimeRange> updatedTimes = new ArrayList<TimeRange>();
-    HashSet<String> optionalGroup = new HashSet<>(request.getOptionalAttendees());
-    if(optionalGroup.size() > 0) {
-     updatedTimes = optimizeOptionalAttendees(verifiedTimes, request, optionalGroup, events);
+    ArrayList<TimeRange> optionalTimes = new ArrayList<TimeRange>();
+    HashSet<String> optionalAttendees = new HashSet<>(request.getOptionalAttendees());
+    if(optionalAttendees.size() > 0) {
+      optionalTimes = optimizeOptionalAttendees(availableTimes, request, optionalAttendees, events);
     }
-    
-    //return the Timeranges with optional attendess if any exist
-    return (updatedTimes.size() == 0) ? verifiedTimes : updatedTimes;
+
+    //returns timeranges with optional attendess if any exist
+    return (optionalTimes.size() == 0) ? availableTimes : optionalTimes;
   }
 
-  public ArrayList<Event> mySort(ArrayList<Event> list, HashSet<String> meetingGroup) {
-      ArrayList<Event> newList = new ArrayList<>();
-      while(list.size() > 0) {
-          int indexMin = 0;
-          for(int i = 1; i < list.size(); i++) {
-            int newTime = list.get(i).getWhen().start(); 
-            if(list.get(indexMin).getWhen().start() > newTime) {
-                indexMin = i;
-            }
-          }
-          Event closestEvent = list.get(indexMin);
-          list.remove(indexMin);
-          // Checks to make sure that a meetingGroup member is actually in this event
-          HashSet<String> attendees = new HashSet<>(closestEvent.getAttendees());
-          attendees.retainAll(meetingGroup);
-          if(attendees.size() <= 0) {
-              continue;
-          } else {
-              newList.add(closestEvent);
-          }
+  /*
+  * Sorts events by start time and filters out events that mandatoryAttendees are not apart of.
+  */
+  public ArrayList<Event> mySort(ArrayList<Event> list, HashSet<String> mandatoryAttendees) {
+    ArrayList<Event> newList = new ArrayList<>();
+    while(list.size() > 0) {
+      int indexMin = 0;
+      for(int i = 1; i < list.size(); i++) {
+        int newTime = list.get(i).getWhen().start(); 
+        if(list.get(indexMin).getWhen().start() > newTime) {
+          indexMin = i;
+        }
       }
-      return newList;
+      Event closestEvent = list.get(indexMin);
+      list.remove(indexMin);
+      // Checks if a mandatoryAttendee is attending member the event
+      HashSet<String> attendees = new HashSet<>(closestEvent.getAttendees());
+      attendees.retainAll(mandatoryAttendees);
+      if(attendees.size() <= 0) {
+        continue;
+      } else {
+        newList.add(closestEvent);
+      }
     }
 
-    public ArrayList<TimeRange> optimizeOptionalAttendees(List<TimeRange> possibleRanges, MeetingRequest request, HashSet<String> optionalGroup, Collection<Event> events) {
+    return newList;
+    }
 
-        ArrayList<TimeRange> possibleOptionalTimes = new ArrayList<>();
-        for(String member: optionalGroup){
-            MeetingRequest myRequest = new MeetingRequest(Arrays.asList(member), request.getDuration());
-            ArrayList<TimeRange> availability = new ArrayList<>(query(events, myRequest));
-            if(availability.size() > 0) {
-                possibleOptionalTimes.addAll(availability);
-            }
-        }
-        //Here we cycle through the time ranges we know already work for mandatory people & keep track of max optionals seen
-        int maxNumOpt = 0;
-        HashMap<TimeRange, Integer> optionalSlots = new HashMap<TimeRange, Integer>();
-        for(TimeRange verifiedTime: possibleRanges) {
-            int bucketStart = verifiedTime.start();
-            int endOfSlot = verifiedTime.end() - 1;
-            int previousNumOpt = 0;
-            System.out.println(verifiedTime);
-            for(int i = verifiedTime.start(); i < verifiedTime.end(); i++ ) {
-                TimeRange currentSlot = TimeRange.fromStartEnd(i, i + 1, false);
-                int updatedNumOpt = checkOptionalsAvailable(possibleOptionalTimes, currentSlot);
+    /*
+    * Returns an ArrayList of timeranges within the available times where the most 
+    * optional attendees can attend.
+    */
+    public ArrayList<TimeRange> optimizeOptionalAttendees(List<TimeRange> availableRanges,
+        MeetingRequest request, HashSet<String> optionalAttendees, Collection<Event> events) {
 
-                //if we switch num optionals record to hashmap
-                if (previousNumOpt != updatedNumOpt || i == endOfSlot) {
-                    //Check if TimeRange is actually big enough for meeting
-                    TimeRange possibleSlot = TimeRange.fromStartEnd(bucketStart, i, true);
-                    bucketStart = i;
-                    if (possibleSlot.duration() >= request.getDuration()) {
-                        optionalSlots.put(possibleSlot, previousNumOpt);
-                        if(previousNumOpt > maxNumOpt) {
-                            maxNumOpt = previousNumOpt;
-                        }
-                    }
-                } 
-                previousNumOpt = updatedNumOpt;
-            }
+      ArrayList<TimeRange> possibleOptionalTimes = new ArrayList<>();
+      for(String member: optionalAttendees){
+        MeetingRequest myRequest = new MeetingRequest(Arrays.asList(member), request.getDuration());
+        ArrayList<TimeRange> availability = new ArrayList<>(calendarQuery(events, myRequest));
+        if(availability.size() > 0) {
+          possibleOptionalTimes.addAll(availability);
         }
-        //We have the max so we loop through hashmap and grab those times
-        ArrayList<TimeRange> maxOptionalTimeRanges = new ArrayList<>();
-        for(TimeRange range: optionalSlots.keySet()) {
-            if (optionalSlots.get(range) == maxNumOpt) {
-                maxOptionalTimeRanges.add(range);
-            }
-        }
+      }
+      //Cycles through times that work for mandatory attendees
+      int maxNumOpt = 0;
+      HashMap<TimeRange, Integer> optionalSlots = new HashMap<TimeRange, Integer>();
+      for(TimeRange freeTimeRange: availableRanges) {
+        int bucketStart = freeTimeRange.start();
+        int endOfSlot = freeTimeRange.end() - 1;
+        int previousNumOpt = 0;
+        System.out.println(freeTimeRange);
+        for(int i = freeTimeRange.start(); i < freeTimeRange.end(); i++ ) {
+          TimeRange currentSlot = TimeRange.fromStartEnd(i, i + 1, false);
+          int updatedNumOpt = checkOptionalsAvailable(possibleOptionalTimes, currentSlot);
 
-        return maxOptionalTimeRanges;
-         
+          //if number of optionals changes then we want to record time range in hashmap
+          if (previousNumOpt != updatedNumOpt || i == endOfSlot) {
+            //Check if TimeRange is actually big enough for meeting
+            TimeRange possibleSlot = TimeRange.fromStartEnd(bucketStart, i, true);
+            bucketStart = i;
+            if (possibleSlot.duration() >= request.getDuration()) {
+              optionalSlots.put(possibleSlot, previousNumOpt);
+              if(previousNumOpt > maxNumOpt) {
+                maxNumOpt = previousNumOpt;
+              }
+            }
+          } 
+          previousNumOpt = updatedNumOpt;
+        }
+      }
+
+      //adds timeRanges of the observed max number of optionals to ArrayList
+      ArrayList<TimeRange> maxOptionalTimeRanges = new ArrayList<>();
+      for(TimeRange range: optionalSlots.keySet()) {
+        if (optionalSlots.get(range) == maxNumOpt) {
+          maxOptionalTimeRanges.add(range);
+        }
+      }
+
+    return maxOptionalTimeRanges;     
     }
 
     /* 

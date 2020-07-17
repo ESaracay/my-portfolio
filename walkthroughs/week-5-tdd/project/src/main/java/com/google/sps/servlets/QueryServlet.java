@@ -39,7 +39,7 @@ public class QueryServlet extends HttpServlet {
     // Find the possible meeting times.
     FindMeetingQuery findMeetingQuery = new FindMeetingQuery();
     Collection<TimeRange> answer =
-        findMeetingQuery.query(Arrays.asList(Events.events), meetingRequest);
+        findMeetingQuery.calendarQuery(Arrays.asList(Events.events), meetingRequest);
 
     // Convert the times to JSON
     String jsonResponse = gson.toJson(answer);
