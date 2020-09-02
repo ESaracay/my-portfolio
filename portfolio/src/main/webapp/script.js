@@ -15,7 +15,7 @@
 function startChat() {
   grabComments();
   grabUser();
-  grabBlobURL();
+  injectUploadURL();
 }
 
 /**
@@ -118,7 +118,7 @@ async function deleteComments() {
   }
 }
 
-async function grabBlobURL(){
+async function injectUploadURL(){
   const blobURL = await fetch("/blobstore-upload-url").then((response) => {return response.text();});
   const myForm = document.getElementById("comment-form");
   myForm.action = blobURL;
