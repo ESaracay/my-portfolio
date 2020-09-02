@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** 
+* Returns whether the user is logged in or not and acts as a datapoint 
+* for the grabUser() function in script.js.
+*/
 @WebServlet("/chat-login")
 public class ChatLoginServlet extends HttpServlet {
   @Override

@@ -15,6 +15,7 @@
 function startChat() {
   grabComments();
   grabUser();
+  injectUploadURL();
 }
 
 /**
@@ -95,6 +96,12 @@ async function grabComments() {
     chatBody.appendChild(comment);
 
     myDiv.appendChild(chatHeader);
+    if(comments[i]["imageBlobKey"] != null) {
+        chatImage = document.createElement('IMG');
+        chatImage.setAttribute('class', 'chat-image');
+        chatImage.setAttribute('src', "/serve?key=" + comments[i]["imageBlobKey"]);
+        myDiv.appendChild(chatImage);
+    }
     myDiv.appendChild(chatBody);
     section.appendChild(myDiv);
   }
@@ -104,9 +111,15 @@ async function grabComments() {
  * Makes call to delete data servlet which erases all comments from dataStore.
  */
 async function deleteComments() {
-  if (confirm('Are you sure you want to delete all comments')) {
-    fetch('/delete-comments', {
+  if (confirm("Are you sure you want to delete all comments")) {
+    fetch("/delete-comments", {
       method: 'POST'
     }).then(() => setTimeout(grabComments, 1000));
   }
+}
+
+async function injectUploadURL(){
+  const blobURL = await fetch("/blobstore-upload-url").then((response) => {return response.text();});
+  const myForm = document.getElementById("comment-form");
+  myForm.action = blobURL;
 }

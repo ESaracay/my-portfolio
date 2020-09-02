@@ -31,15 +31,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** 
+* Returns all comments to chat page in descending order of most recent upload.
+*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   public class Comment {
-    private String timeCreated, user, content;
+    private String timeCreated, user, content, imageBlobKey;
 
-    public Comment(String user, String content, String time) {
+    public Comment(String user, String content, String time, String imageBlobKey) {
       this.user = user;
       this.content = content;
+      this.imageBlobKey = imageBlobKey;
       this.timeCreated = time;
     }
   }
@@ -58,8 +61,9 @@ public class DataServlet extends HttpServlet {
       String user = (String) entity.getProperty("user");
       String content = (String) entity.getProperty("content");
       String displayTime = (String) entity.getProperty("displayTime");
+      String imageBlobKey = (String) entity.getProperty("imageBlobKey");
 
-      Comment myComment = new Comment(user, content, displayTime);
+      Comment myComment = new Comment(user, content, displayTime, imageBlobKey);
       commentList.add(myComment);
 
       if (commentList.size() >= numCommentsDisplayed) {
