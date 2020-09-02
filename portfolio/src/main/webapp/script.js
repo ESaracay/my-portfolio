@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function startChat() {
+  grabComments();
+  grabUser();
+  injectUploadURL();
+}
+
 /**
  * Picks a random movie from our list and displays
  * it when the user clicks the random movie generator button.
  */
-
-
 function randomMovie() {
   const movies = [
     'Star Wars',
@@ -50,21 +54,72 @@ function randomMovie() {
   container.innerText = '"' + movie + '"';
 }
 
+/**
+ * Fetches user information and adds it to chat header.
+ */
+async function grabUser() {
+  const userInfo = await fetch('/chat-login').then(response => response.json());
+  if (userInfo['email'] === 'none') {
+    window.location = userInfo['loginURL'];
+  }
+  user = 'Logged in as: ' + userInfo['email'];
+  exit = userInfo['logoutURL'];
+  const userContainer = document.getElementById('User');
+  const logoutContainer = document.getElementById('logout');
+  // If page is refreshed then we want to reload the username
+  userContainer.innerHTML = '';
+  logoutContainer.setAttribute('href', exit);
+  userContainer.appendChild(document.createTextNode(user));
+}
+
+/**
+ * Fetches comments from server and inserts the given
+ * Json into a comment div.
+ */
 async function grabComments() {
   const comments = await fetch('/data').then(response => response.json());
-  console.log(comments);
-  for (var i = 0; i < comments.length; i++) {
-    section = document.getElementById('comments');
 
-    chat_header = document.createElement('HEADER');
-    comment_header = comments[i]['user'] + ' ' + comments[i]['time'];
-    chat_header.appendChild(document.createTextNode(comment_header));
+  const section = document.getElementById('comments');
+  section.innerHTML = '';
+  for (let i = 0; i < comments.length; i++) {
+    // We want each comment to have a certain CSS styling
+    myDiv = document.createElement('div');
+    myDiv.setAttribute('class', 'comment');
 
-    chat_body = document.createElement('P');
+    chatHeader = document.createElement('header');
+    commentHeader =
+        comments[i]['user'] + ' (' + comments[i]['timeCreated'] + ')';
+    chatHeader.appendChild(document.createTextNode(commentHeader));
+    chatBody = document.createElement('p');
+    chatBody.setAttribute('class', 'comment-body');
     comment = document.createTextNode(comments[i]['content']);
-    chat_body.appendChild(comment);
+    chatBody.appendChild(comment);
 
-    section.appendChild(chat_header);
-    section.appendChild(chat_body);
+    myDiv.appendChild(chatHeader);
+    if(comments[i]["imageBlobKey"] != null) {
+        chatImage = document.createElement('IMG');
+        chatImage.setAttribute('class', 'chat-image');
+        chatImage.setAttribute('src', "/serve?key=" + comments[i]["imageBlobKey"]);
+        myDiv.appendChild(chatImage);
+    }
+    myDiv.appendChild(chatBody);
+    section.appendChild(myDiv);
   }
+}
+
+/**
+ * Makes call to delete data servlet which erases all comments from dataStore.
+ */
+async function deleteComments() {
+  if (confirm("Are you sure you want to delete all comments")) {
+    fetch("/delete-comments", {
+      method: 'POST'
+    }).then(() => setTimeout(grabComments, 1000));
+  }
+}
+
+async function injectUploadURL(){
+  const blobURL = await fetch("/blobstore-upload-url").then((response) => {return response.text();});
+  const myForm = document.getElementById("comment-form");
+  myForm.action = blobURL;
 }

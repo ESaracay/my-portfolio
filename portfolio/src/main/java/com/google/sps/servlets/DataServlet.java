@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,57 +31,71 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** 
+* Returns all comments to chat page in descending order of most recent upload.
+*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   public class Comment {
-    private String time, user, content;
+    private String timeCreated, user, content, imageBlobKey;
 
-    public Comment(String user, String content) {
-      Date date = new Date();
-      SimpleDateFormat formatter = new SimpleDateFormat("MMM d, HH:MM a");
+    public Comment(String user, String content, String time, String imageBlobKey) {
       this.user = user;
       this.content = content;
-      this.time = formatter.format(date);
+      this.imageBlobKey = imageBlobKey;
+      this.timeCreated = time;
     }
   }
 
-  private List<Comment> text;
-
-  @Override
-  public void init() {
-    text = new ArrayList<>();
-  }
+  private int numCommentsDisplayed = 10;
+  private final int defaultCommentsDisplayed = 10;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String my_json = convertToJson(text);
+    Query myQuery = new Query("Task").addSort("timeStamp", SortDirection.DESCENDING);
+    DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = dataStore.prepare(myQuery);
+    List<Comment> commentList = new ArrayList<>();
+
+    for (Entity entity : results.asIterable()) {
+      String user = (String) entity.getProperty("user");
+      String content = (String) entity.getProperty("content");
+      String displayTime = (String) entity.getProperty("displayTime");
+      String imageBlobKey = (String) entity.getProperty("imageBlobKey");
+
+      Comment myComment = new Comment(user, content, displayTime, imageBlobKey);
+      commentList.add(myComment);
+
+      if (commentList.size() >= numCommentsDisplayed) {
+        break;
+      }
+    }
+    String myJson = convertToJson(commentList);
     response.setContentType("application/json;");
-    response.getWriter().println(my_json);
+    response.getWriter().println(myJson);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Entity myEntity = new Entity("Task");
-
-    String user = request.getParameter("user");
-    String content = request.getParameter("content");
-    long time_stamp = System.currentTimeMillis();
-
-    myEntity.setProperty("user", user);
-    myEntity.setProperty("content", content);
-    myEntity.setProperty("time_stamp", time_stamp);
-
-    DatastoreService data_store = DatastoreServiceFactory.getDatastoreService();
-    data_store.put(myEntity);
-
-    // redirect to same page so that the page refreshes with new comment
-    // response.sendRedirect("/chat.html");
+    numCommentsDisplayed = setMax(request);
+    response.sendRedirect("/chat.html");
   }
 
-  private String convertToJson(List<Comment> text) {
-    Gson my_gson = new Gson();
-    String my_json = my_gson.toJson(text);
-    return my_json;
+  private String convertToJson(List<Comment> commentList) {
+    Gson myGson = new Gson();
+    String myJson = myGson.toJson(commentList);
+    return myJson;
+  }
+
+  private int setMax(HttpServletRequest request) {
+    String mynum = request.getParameter("numComments");
+    int num;
+    try {
+      num = Integer.parseInt(mynum);
+    } catch (NumberFormatException e) {
+      return defaultCommentsDisplayed;
+    }
+
+    return num;
   }
 }
